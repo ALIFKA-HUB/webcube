@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
-import { ArrowRight, Check, Copy, Play, RotateCcw, Sparkles, Square } from "lucide-react";
+import { Check, Copy, Hand, Play, RotateCcw, Square } from "lucide-react";
 import { PRODUCTS } from "../data/products";
-import { WA_NUMBER, formatRupiah, formatTime, scrollToId } from "../data/content";
+import { WA_NUMBER, formatRupiah, formatTime } from "../data/content";
 import type { Phase, Product } from "../types";
 import { SectionHeader } from "./SectionHeader";
 
@@ -180,45 +180,44 @@ export function TimerSection() {
     window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank", "noopener,noreferrer");
   };
 
-  // State colors strictly matching specification: #111111 idle/running, #9F2F2D holding, #346538 ready
   const timerColor =
     phase === "holding"
-      ? "text-[#9F2F2D]"
+      ? "text-vermilion"
       : phase === "ready"
-      ? "text-[#346538]"
-      : "text-[#111111]";
+      ? "text-green"
+      : "text-ink";
 
   const hint =
     phase === "holding"
-      ? "Tahan... tunggu sampai hijau"
+      ? "tahan sensor... tunggu lampu indikator hijau"
       : phase === "ready"
-      ? "Lepas spasi / sentuhan untuk MULAI!"
+      ? "lepas spasi atau sentuhan untuk mulai waktu"
       : phase === "running"
-      ? "Tekan spasi / ketuk untuk BERHENTI"
-      : "Tahan Spasi lalu lepas untuk mulai (di mobile: tahan area timer)";
+      ? "tekan spasi atau sentuh sensor untuk berhenti"
+      : "tahan spasi atau tekan kedua sensor untuk bersiap";
 
   return (
     <section id="timer" ref={sectionRef} className="relative scroll-mt-20 px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl">
         <SectionHeader
-          eyebrow="WCA Speedcubing Bench"
+          index="03 // wca tournament bench"
           title="Laboratorium Simulasi Timer & Scramble"
-          subtitle="Uji refleksmu dengan 20-langkah acakan resmi WCA. Jalankan stopwatch, catat rata-rata Ao5, dan dapatkan rekomendasi hardware presisi."
+          subtitle="Uji kecepatan dengan 20 langkah acakan resmi WCA. Jalankan stopwatch, catat rata-rata Ao5, dan dapatkan rekomendasi hardware presisi."
         />
 
-        {/* Laboratory Workbench Layout */}
-        <div className="overflow-hidden rounded-xl border border-[#E4E2DD] bg-[#FFFFFF] p-6 sm:p-8">
+        {/* Tournament Workbench Layout */}
+        <div className="tactile-card overflow-hidden rounded-xl p-6 sm:p-8">
           {/* WCA Scramble Bar */}
           <div>
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <span className="font-mono text-xs uppercase tracking-wider text-[#575653]">
-                WCA 3x3 Scramble · 20 Langkah
+              <span className="text-xs text-ink-muted">
+                wca 3x3 scramble · 20 langkah kompetisi
               </span>
               <button
                 onClick={newScramble}
-                className="inline-flex items-center gap-1.5 rounded-md border border-[#E4E2DD] bg-[#FFFFFF] px-3 py-1.5 font-mono text-xs font-semibold text-[#111111] transition-colors hover:bg-[#F7F6F3]"
+                className="tactile-btn-light inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-bold text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
               >
-                <RotateCcw className="h-3.5 w-3.5" />
+                <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
                 <span>Acak Ulang</span>
               </button>
             </div>
@@ -230,16 +229,18 @@ export function TimerSection() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.15 }}
-                className="mt-3 flex flex-wrap gap-x-3 gap-y-1.5 rounded-lg border border-[#E4E2DD] bg-[#EFECE6] p-4 font-mono text-base font-semibold tracking-wide text-[#111111] sm:text-lg"
+                className="hardware-well mt-3 flex flex-wrap gap-x-3 gap-y-1.5 rounded-lg p-4 font-mono text-base font-bold text-ink sm:text-lg"
               >
                 {scramble.map((m, i) => (
-                  <span key={i}>{m}</span>
+                  <span key={i} className="rounded bg-surface px-2 py-0.5 border border-border shadow-2xs">
+                    {m}
+                  </span>
                 ))}
               </motion.div>
             </AnimatePresence>
           </div>
 
-          {/* Stopwatch Digital Timer Display */}
+          {/* Authentic StackMat Style Bench Display */}
           <div
             onPointerDown={(e) => {
               if ((e.target as HTMLElement).closest("button")) return;
@@ -250,36 +251,107 @@ export function TimerSection() {
               if (e.pointerType === "mouse") return;
               pressUp();
             }}
-            className="relative mt-6 select-none rounded-xl border border-[#E4E2DD] bg-[#EFECE6] p-8 text-center sm:p-12"
+            className="hardware-well relative mt-6 select-none rounded-xl p-6 text-center sm:p-10 border border-border"
             style={{ touchAction: "manipulation" }}
           >
+            {/* Top Chronometer Status Lamps */}
+            <div className="flex items-center justify-center gap-6 text-xs text-ink-muted">
+              <div className="flex items-center gap-2">
+                <span
+                  className={`h-2.5 w-2.5 rounded-full transition-colors ${
+                    phase === "holding"
+                      ? "bg-vermilion"
+                      : "bg-border-strong"
+                  }`}
+                  aria-hidden="true"
+                />
+                <span>hold</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span
+                  className={`h-2.5 w-2.5 rounded-full transition-colors ${
+                    phase === "ready"
+                      ? "bg-green"
+                      : "bg-border-strong"
+                  }`}
+                  aria-hidden="true"
+                />
+                <span>ready</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span
+                  className={`h-2.5 w-2.5 rounded-full transition-colors ${
+                    phase === "running"
+                      ? "bg-ink"
+                      : "bg-border-strong"
+                  }`}
+                  aria-hidden="true"
+                />
+                <span>timing</span>
+              </div>
+            </div>
+
+            {/* Main Digital Time Numbers */}
             <motion.div
-              className={`font-mono text-6xl font-bold tabular-nums tracking-tight sm:text-8xl ${timerColor}`}
-              animate={{ scale: phase === "ready" ? 1.04 : 1 }}
+              className={`mt-4 font-mono text-6xl font-black tabular-nums tracking-tight sm:text-8xl ${timerColor}`}
+              animate={{ scale: phase === "ready" ? 1.03 : 1 }}
               transition={{ type: "spring", stiffness: 350, damping: 18 }}
             >
               {formatTime(phase === "holding" || phase === "ready" ? 0 : elapsed)}
             </motion.div>
 
-            <p className="mt-4 font-mono text-xs text-[#575653] sm:text-sm">{hint}</p>
+            {/* Instruction Banner */}
+            <p className="mt-3 text-xs text-ink-secondary sm:text-sm">
+              {hint}
+            </p>
 
+            {/* Dual Sensor Palm Pads */}
+            <div className="mt-8 grid grid-cols-2 gap-4">
+              <button
+                type="button"
+                onPointerDown={pressDown}
+                onPointerUp={pressUp}
+                className={`flex h-20 items-center justify-center gap-3 rounded-lg border text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion ${
+                  phase === "holding" || phase === "ready"
+                    ? "border-vermilion bg-vermilion-soft text-vermilion"
+                    : "border-border bg-surface text-ink-secondary hover:bg-well"
+                }`}
+              >
+                <Hand className="h-5 w-5" aria-hidden="true" />
+                <span>sensor pad kiri</span>
+              </button>
+
+              <button
+                type="button"
+                onPointerDown={pressDown}
+                onPointerUp={pressUp}
+                className={`flex h-20 items-center justify-center gap-3 rounded-lg border text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion ${
+                  phase === "holding" || phase === "ready"
+                    ? "border-vermilion bg-vermilion-soft text-vermilion"
+                    : "border-border bg-surface text-ink-secondary hover:bg-well"
+                }`}
+              >
+                <Hand className="h-5 w-5" aria-hidden="true" />
+                <span>sensor pad kanan</span>
+              </button>
+            </div>
+
+            {/* Tactile Control Buttons */}
             <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <button
                 onClick={toggleButton}
-                className={`inline-flex min-w-[200px] items-center justify-center gap-2 rounded-md px-6 py-3 font-mono text-sm font-bold text-white transition-colors ${
-                  phase === "running"
-                    ? "bg-[#D9381E] hover:bg-[#B82E18]"
-                    : "bg-[#111111] hover:bg-[#2b2b29]"
-                }`}
+                className="tactile-btn-dark inline-flex min-w-[200px] items-center justify-center gap-2 rounded-md px-6 py-3.5 text-sm font-bold whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
               >
                 {phase === "running" ? (
-                  <>
-                    <Square className="h-4 w-4" /> Berhenti Timer
-                  </>
+                  <span className="inline-flex items-center gap-2 whitespace-nowrap">
+                    <Square className="h-4 w-4" aria-hidden="true" />
+                    <span className="whitespace-nowrap">Hentikan Timer</span>
+                  </span>
                 ) : (
-                  <>
-                    <Play className="h-4 w-4" /> Mulai Timer
-                  </>
+                  <span className="inline-flex items-center gap-2 whitespace-nowrap">
+                    <Play className="h-4 w-4" aria-hidden="true" />
+                    <span className="whitespace-nowrap">Mulai Timer</span>
+                  </span>
                 )}
               </button>
 
@@ -290,105 +362,102 @@ export function TimerSection() {
                     setElapsed(0);
                     setPhase("idle");
                   }}
-                  className="rounded-md border border-[#E4E2DD] bg-[#FFFFFF] px-4 py-3 font-mono text-xs font-semibold text-[#575653] transition-colors hover:bg-[#F7F6F3] hover:text-[#111111]"
+                  className="tactile-btn-light rounded-md px-4 py-3 text-xs font-bold text-ink-secondary whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
                 >
-                  Reset Sesi
+                  <span className="whitespace-nowrap">Reset Sesi</span>
                 </button>
               )}
             </div>
           </div>
 
-          {/* Session Statistics */}
-          <div className="mt-6 grid grid-cols-3 gap-3">
-            {[
-              ["Terakhir", last !== undefined ? formatTime(last) : "-"],
-              ["Personal Best (PB)", best !== null ? formatTime(best) : "-"],
-              ["Ao5 Rata-rata", ao5 !== null ? formatTime(ao5) : "-"],
-            ].map(([k, v]) => (
-              <div
-                key={k}
-                className="rounded-lg border border-[#E4E2DD] bg-[#EFECE6] p-3 text-center"
-              >
-                <div className="font-mono text-[10px] uppercase tracking-wider text-[#575653]">
-                  {k}
-                </div>
-                <div className="mt-1 font-mono text-base font-bold text-[#111111] sm:text-lg">
-                  {v}
-                </div>
+          {/* Session Telemetry Grid */}
+          <div className="mt-6 grid grid-cols-3 divide-x divide-border rounded-lg border border-border bg-surface p-4 text-center">
+            <div>
+              <div className="text-[10px] text-ink-muted">waktu terakhir</div>
+              <div className="mt-1 font-mono text-base font-black text-ink sm:text-lg">
+                {last !== undefined ? formatTime(last) : "-"}
               </div>
-            ))}
+            </div>
+            <div>
+              <div className="text-[10px] text-ink-muted">personal best (pb)</div>
+              <div className="mt-1 font-mono text-base font-black text-vermilion sm:text-lg">
+                {best !== null ? formatTime(best) : "-"}
+              </div>
+            </div>
+            <div>
+              <div className="text-[10px] text-ink-muted">average of 5 (ao5)</div>
+              <div className="mt-1 font-mono text-base font-black text-green sm:text-lg">
+                {ao5 !== null ? formatTime(ao5) : "-"}
+              </div>
+            </div>
           </div>
 
-          {/* Dynamic Product Recommendation & Voucher Claim */}
+          {/* Recent Solves Chips */}
+          {solves.length > 0 && (
+            <div className="mt-4 flex flex-wrap items-center gap-1.5 text-xs">
+              <span className="text-ink-muted">sesi ({solves.length}):</span>
+              {solves.slice(0, 8).map((time, idx) => (
+                <span
+                  key={idx}
+                  className="rounded border border-border bg-well px-2 py-0.5 font-mono text-ink"
+                >
+                  #{idx + 1}: {formatTime(time)}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Recommendation & Voucher Claim Box */}
           <AnimatePresence>
             {rec && (
               <motion.div
-                initial={{ opacity: 0, y: 12, height: 0 }}
-                animate={{ opacity: 1, y: 0, height: "auto" }}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
-                transition={{ type: "spring", stiffness: 220, damping: 24 }}
+                transition={{ duration: 0.2 }}
                 className="overflow-hidden"
               >
-                <div className="mt-6 rounded-xl border border-[#E4E2DD] bg-[#EFECE6] p-5 sm:p-6">
-                  <div className="flex items-start gap-3">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[#111111] text-white">
-                      <Sparkles className="h-4 w-4" />
+                <div className="hardware-well mt-6 rounded-lg p-5">
+                  <div className="flex items-center gap-2">
+                    <span className="rounded-md border border-vermilion/30 bg-vermilion-soft px-2 py-0.5 text-xs font-semibold text-vermilion">
+                      rekomendasi rubik
                     </span>
-                    <div className="min-w-0">
-                      <p className="font-bold text-[#111111]">
-                        Waktu tercatat:{" "}
-                        <span className="font-mono text-[#D9381E]">{formatTime(last!)}</span>
-                      </p>
-                      <p className="mt-1 text-xs text-[#575653] sm:text-sm">{rec.headline}</p>
-                      <p className="mt-2 text-xs text-[#111111] sm:text-sm">
-                        Rekomendasi untukmu: <strong>{rec.product.name}</strong> ({formatRupiah(rec.product.price)})
-                      </p>
+                    <span className="text-xs text-ink font-semibold">
+                      waktu solve: <span className="font-mono">{last !== undefined ? formatTime(last) : "-"}</span>
+                    </span>
+                  </div>
+
+                  <p className="mt-2 text-sm leading-relaxed text-ink-secondary">
+                    {rec.headline}
+                  </p>
+
+                  <div className="mt-4 flex flex-col items-start justify-between gap-4 border-t border-border pt-4 sm:flex-row sm:items-center">
+                    <div>
+                      <div className="text-xs text-ink-muted">
+                        model yang disarankan
+                      </div>
+                      <div className="text-base font-black text-ink">
+                        {rec.product.name}
+                      </div>
+                      <div className="font-mono text-xs font-bold text-vermilion">
+                        {formatRupiah(rec.product.price)}
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="mt-4 rounded-md border border-[#E4E2DD] bg-[#FFFFFF] p-3 text-xs text-[#575653]">
-                    Gunakan kode voucher{" "}
-                    <code className="rounded border border-[#E4E2DD] bg-[#EFECE6] px-1.5 py-0.5 font-mono font-bold text-[#111111]">
-                      SUB10CUBER
-                    </code>{" "}
-                    untuk diskon ekstra <strong>Rp 50.000</strong> pembelian seri MagLev via WhatsApp.
-                  </div>
-
-                  <div className="mt-4 flex flex-col gap-2.5 sm:flex-row">
-                    <button
-                      onClick={claim}
-                      className="inline-flex items-center justify-center gap-2 rounded-md bg-[#111111] px-5 py-2.5 font-mono text-xs font-semibold text-white transition-colors hover:bg-[#2b2b29] sm:text-sm"
-                    >
-                      {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                      <span>{copied ? "Kode Tersalin! Membuka WhatsApp..." : "Klaim Voucher SUB10CUBER"}</span>
-                    </button>
-
-                    <button
-                      onClick={() => scrollToId("katalog")}
-                      className="inline-flex items-center justify-center gap-1.5 rounded-md border border-[#E4E2DD] bg-[#FFFFFF] px-5 py-2.5 text-xs font-semibold text-[#111111] transition-colors hover:bg-[#F7F6F3] sm:text-sm"
-                    >
-                      <span>Lihat di Katalog</span>
-                      <ArrowRight className="h-4 w-4" />
-                    </button>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <button
+                        onClick={claim}
+                        className="tactile-btn-dark inline-flex items-center gap-2 rounded-md px-4 py-2 text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
+                      >
+                        {copied ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Copy className="h-3.5 w-3.5" aria-hidden="true" />}
+                        <span>Klaim Voucher SUB10CUBER</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
-
-          {/* Solve History Chips */}
-          {solves.length > 1 && (
-            <div className="mt-6 flex flex-wrap gap-1.5 border-t border-[#E4E2DD] pt-4">
-              {solves.slice(0, 8).map((s, i) => (
-                <span
-                  key={i}
-                  className="rounded-full border border-[#E4E2DD] bg-[#EFECE6] px-3 py-1 font-mono text-xs text-[#575653]"
-                >
-                  #{solves.length - i} · {formatTime(s)}
-                </span>
-              ))}
-            </div>
-          )}
         </div>
       </div>
     </section>

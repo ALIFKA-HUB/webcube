@@ -11,9 +11,9 @@ export function ReviewsFaqSection() {
     <section id="testimoni" className="relative scroll-mt-20 px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <SectionHeader
-          eyebrow="Ulasan & FAQ"
-          title="Dipercaya Speedcuber Kompetitif"
-          subtitle="Dari pelajar yang baru menembus sub-12 hingga kompetitor regional, cuber di seluruh Indonesia mempercayakan setup rubiknya pada CuberLab ID."
+          index="04 // ulasan dan faq"
+          title="Dipercaya Speedcuber Kompetitif Indonesia"
+          subtitle="Dari pemula yang mengejar sub-20 hingga pemegang rekor kompetisi nasional, cuber di seluruh Indonesia mempercayakan setup dan tuning rubiknya pada CuberLab ID."
         />
 
         {/* 12-column asymmetric layout: Left 5 cols (Testimonials), Right 7 cols (FAQ) */}
@@ -23,37 +23,36 @@ export function ReviewsFaqSection() {
             {TESTIMONIALS.map((t) => (
               <div
                 key={t.name}
-                className="flex flex-col justify-between rounded-xl border border-[#E4E2DD] bg-[#FFFFFF] p-5 sm:p-6"
+                className="tactile-card flex flex-col justify-between rounded-xl p-5 sm:p-6"
               >
                 <div>
-                  {/* Star Rating */}
-                  <div className="flex items-center gap-1">
-                    {[...Array(t.rating)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-[#D97706] text-[#D97706]" />
-                    ))}
-                  </div>
-
-                  {/* Benchmark Badge */}
-                  <div className="mt-3">
-                    <span className="rounded-full border border-[#E4E2DD] bg-[#EFECE6] px-2.5 py-0.5 font-mono text-[10px] font-semibold text-[#575653]">
+                  {/* Star Rating & Badge */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1">
+                      {[...Array(t.rating)].map((_, i) => (
+                        <Star key={i} className="h-4 w-4 fill-vermilion text-vermilion" aria-hidden="true" />
+                      ))}
+                    </div>
+                    <span className="rounded-md border border-border bg-well px-2 py-0.5 font-mono text-xs text-ink-secondary">
                       {t.badge}
                     </span>
                   </div>
 
                   {/* Quote (<= 3 lines) */}
-                  <p className="mt-3 text-xs leading-relaxed text-[#111111] sm:text-sm line-clamp-3">
+                  <p className="mt-3.5 text-xs font-medium leading-relaxed text-ink sm:text-sm line-clamp-3">
                     "{t.quote}"
                   </p>
                 </div>
 
                 {/* Attribution */}
-                <div className="mt-4 flex items-center justify-between border-t border-[#E4E2DD] pt-3 text-xs">
+                <div className="mt-4 flex items-center justify-between border-t border-border pt-3 text-xs">
                   <div>
-                    <div className="font-bold text-[#111111]">{t.name}</div>
-                    <div className="text-[11px] text-[#575653]">{t.role}</div>
+                    <div className="font-bold text-ink">{t.name}</div>
+                    <div className="text-xs text-ink-muted">{t.role}</div>
                   </div>
-                  <span className="inline-flex items-center gap-1 font-mono text-[10px] text-[#346538]">
-                    <CheckCircle2 className="h-3.5 w-3.5" /> Terverifikasi
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-green">
+                    <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
+                    <span>terverifikasi</span>
                   </span>
                 </div>
               </div>
@@ -61,17 +60,17 @@ export function ReviewsFaqSection() {
           </div>
 
           {/* Right Column (7 cols): Minimalist FAQ Accordion */}
-          <div className="rounded-xl border border-[#E4E2DD] bg-[#FFFFFF] p-6 sm:p-8 lg:col-span-7">
-            <div className="mb-6 border-b border-[#E4E2DD] pb-4">
-              <span className="font-mono text-xs uppercase tracking-wider text-[#575653]">
-                Pertanyaan Umum
+          <div className="tactile-card rounded-xl p-6 sm:p-8 lg:col-span-7">
+            <div className="mb-6 border-b border-border pb-4">
+              <span className="text-xs text-ink-muted">
+                tanya jawab resmi
               </span>
-              <h3 className="mt-1 text-xl font-extrabold tracking-tight text-[#111111]">
+              <h3 className="mt-1 text-xl font-black tracking-tight text-ink">
                 FAQ Pengiriman & Garansi Setup
               </h3>
             </div>
 
-            <div className="divide-y divide-[#E4E2DD]">
+            <div className="divide-y divide-border">
               {FAQS.map((faq, i) => {
                 const isOpen = openIdx === i;
                 return (
@@ -79,11 +78,11 @@ export function ReviewsFaqSection() {
                     <button
                       onClick={() => setOpenIdx(isOpen ? null : i)}
                       aria-expanded={isOpen}
-                      className="flex w-full items-center justify-between gap-4 text-left text-sm font-bold text-[#111111] transition-colors hover:text-[#D9381E] sm:text-base"
+                      className="flex w-full items-center justify-between gap-4 text-left text-sm font-bold text-ink transition-colors hover:text-vermilion focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion sm:text-base"
                     >
                       <span>{faq.q}</span>
-                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-[#E4E2DD] bg-[#EFECE6] text-[#111111]">
-                        {isOpen ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
+                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-border bg-well text-ink">
+                        {isOpen ? <Minus className="h-3.5 w-3.5" aria-hidden="true" /> : <Plus className="h-3.5 w-3.5" aria-hidden="true" />}
                       </span>
                     </button>
 
@@ -93,10 +92,10 @@ export function ReviewsFaqSection() {
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: "auto", opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.2, ease: "easeInOut" }}
+                          transition={{ duration: 0.18, ease: "easeInOut" }}
                           className="overflow-hidden"
                         >
-                          <p className="mt-2.5 text-xs leading-relaxed text-[#575653] sm:text-sm">
+                          <p className="mt-2.5 text-xs leading-relaxed text-ink-secondary sm:text-sm">
                             {faq.a}
                           </p>
                         </motion.div>

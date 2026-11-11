@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, animate, motion } from "framer-motion";
-import { Activity, CheckCircle2, Cpu, Gauge, Magnet, Sliders } from "lucide-react";
+import { Activity, CheckCircle2, Cpu, Gauge, Magnet, Sliders, Target, Zap } from "lucide-react";
 import { STYLE_PROFILES, TENSION_LEVELS, TRAVEL_LEVELS } from "../data/content";
 import { SectionHeader } from "./SectionHeader";
 
@@ -8,27 +8,29 @@ function Meter({
   label,
   value,
   display,
+  barColor = "bg-ink",
 }: {
   label: string;
   value: number;
   display: string;
+  barColor?: string;
 }) {
   return (
     <div>
       <div className="mb-1.5 flex items-center justify-between font-mono text-[11px]">
-        <span className="text-[#575653]">{label}</span>
+        <span className="text-ink-secondary">{label}</span>
         <motion.span
           key={display}
           initial={{ opacity: 0, y: 2 }}
           animate={{ opacity: 1, y: 0 }}
-          className="font-bold text-[#111111]"
+          className="font-bold text-ink"
         >
           {display}
         </motion.span>
       </div>
-      <div className="h-2 overflow-hidden rounded-full border border-[#E4E2DD] bg-[#EFECE6]">
+      <div className="h-2 overflow-hidden rounded-full border border-border bg-well">
         <motion.div
-          className="h-full rounded-full bg-[#111111]"
+          className={`h-full rounded-full ${barColor}`}
           animate={{ width: `${value}%` }}
           transition={{ type: "spring", stiffness: 90, damping: 18 }}
         />
@@ -48,34 +50,42 @@ function MagLevCard() {
   }, []);
 
   return (
-    <div className="flex h-full flex-col justify-between bg-[#FFFFFF] p-6 sm:p-8 md:col-span-7">
+    <div className="flex h-full flex-col justify-between bg-surface p-6 sm:p-8 md:col-span-7">
       <div>
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E4E2DD] bg-[#EFECE6] px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-[#575653]">
-          <Magnet className="h-3 w-3" /> Dual-Repulsion System
-        </span>
+        <div className="flex items-center justify-between text-xs text-ink-muted">
+          <span className="inline-flex items-center gap-1.5 text-vermilion font-semibold">
+            <Magnet className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>01. dual-repulsion maglev</span>
+          </span>
+          <span>rekayasa tanpa pegas</span>
+        </div>
 
-        <h3 className="mt-4 text-2xl font-extrabold tracking-tight text-[#111111]">
+        <h3 className="mt-3 text-2xl font-black tracking-tight text-ink">
           Dual-Repulsion MagLev System
         </h3>
 
-        <p className="mt-2.5 text-sm leading-relaxed text-[#575653]">
-          Magnet cincin yang saling tolak menggantikan pegas logam konvensional. Hasilnya spring noise zero, tensi konsisten sepanjang umur pakai, dan gesekan kinetik turun hingga 68%.
+        <p className="mt-2 text-sm leading-relaxed text-ink-secondary">
+          Magnet cincin berkutub sama (N-N) saling tolak menggantikan pegas logam konvensional. Spring noise nol, tensi stabil seumur pakai, dan gesekan kinetik berkurang 68%.
         </p>
 
         {/* Toggle Mode */}
-        <div className="mt-4 inline-flex rounded-lg border border-[#E4E2DD] bg-[#EFECE6] p-1">
+        <div className="mt-5 inline-flex rounded-lg border border-border bg-well p-1">
           <button
             onClick={() => setMode("spring")}
-            className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-colors ${
-              !isMag ? "bg-[#FFFFFF] text-[#111111] shadow-xs" : "text-[#575653] hover:text-[#111111]"
+            className={`rounded-md px-3.5 py-1.5 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion ${
+              !isMag
+                ? "bg-ink text-surface shadow-xs"
+                : "text-ink-secondary hover:text-ink"
             }`}
           >
             Traditional Spring
           </button>
           <button
             onClick={() => setMode("maglev")}
-            className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-colors ${
-              isMag ? "bg-[#FFFFFF] text-[#111111] shadow-xs" : "text-[#575653] hover:text-[#111111]"
+            className={`rounded-md px-3.5 py-1.5 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion ${
+              isMag
+                ? "bg-vermilion text-canvas shadow-xs"
+                : "text-ink-secondary hover:text-ink"
             }`}
           >
             MagLev Repulsion
@@ -89,148 +99,85 @@ function MagLevCard() {
           <Meter
             label="Gesekan Kinetik"
             value={isMag ? 32 : 100}
-            display={isMag ? "32% (-68%)" : "100%"}
+            display={isMag ? "32% (-68%)" : "100% (Baseline)"}
+            barColor={isMag ? "bg-green" : "bg-ink-muted"}
           />
           <Meter
             label="Potensi Kecepatan (TPS)"
-            value={isMag ? 94 : 58}
-            display={isMag ? "11+ TPS" : "6-7 TPS"}
+            value={isMag ? 92 : 60}
+            display={isMag ? "11+ TPS" : "~7.5 TPS"}
+            barColor={isMag ? "bg-vermilion" : "bg-ink-muted"}
           />
           <Meter
-            label="Suara Pegas"
-            value={isMag ? 0 : 78}
-            display={isMag ? "0 dB · Hening" : "Berderit"}
+            label="Suara Pegas (Noise)"
+            value={isMag ? 0 : 75}
+            display={isMag ? "0 dB · Hening" : "42 dB · Berdecit"}
+            barColor={isMag ? "bg-blue" : "bg-ink-muted"}
           />
         </div>
 
-        {/* Animated Schematic */}
-        <div className="relative flex min-h-[220px] items-center justify-center overflow-hidden rounded-lg border border-[#E4E2DD] bg-[#EFECE6] p-3">
+        {/* Visual Schematic */}
+        <div className="hardware-well relative flex h-48 items-center justify-center rounded-lg p-4">
           <AnimatePresence mode="wait">
-            <motion.svg
-              key={mode}
-              viewBox="0 0 200 170"
-              className="relative h-full max-h-[200px] w-full max-w-[220px]"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.25 }}
-            >
-              {/* Bottom Plate */}
-              <rect x="40" y="128" width="120" height="14" rx="3" fill="#111111" stroke="#E4E2DD" />
-              {!isMag ? (
-                <>
-                  <motion.g
-                    animate={{ y: [0, 6, 0] }}
-                    transition={{ duration: 0.7, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <rect x="40" y="26" width="120" height="14" rx="3" fill="#111111" stroke="#E4E2DD" />
-                  </motion.g>
-                  <motion.polyline
-                    points={zig}
+            {isMag ? (
+              <motion.div
+                key="maglev"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+                className="flex flex-col items-center justify-center"
+              >
+                <div className="h-4 w-28 rounded-xs bg-ink" />
+                <motion.div
+                  className="mt-2.5 h-6 w-20 rounded-full border-2 border-vermilion bg-vermilion-soft flex items-center justify-center font-mono text-[10px] font-bold text-vermilion"
+                  animate={{ y: [0, -3, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  N (POLE)
+                </motion.div>
+                <div className="my-2 flex flex-col items-center text-[10px] text-ink-muted">
+                  <span className="text-vermilion font-bold">▲ MEDAN TOLAK ▼</span>
+                  <span>celah repulsi magnetik</span>
+                </div>
+                <motion.div
+                  className="mb-2.5 h-6 w-20 rounded-full border-2 border-vermilion bg-vermilion-soft flex items-center justify-center text-[10px] font-bold text-vermilion"
+                  animate={{ y: [0, 3, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  N (POLE)
+                </motion.div>
+                <div className="h-4 w-28 rounded-xs bg-ink" />
+                <span className="mt-2 text-[10px] text-ink-muted">
+                  n-n repulsion · 0% kontak logam
+                </span>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="spring"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+                className="flex flex-col items-center justify-center"
+              >
+                <div className="h-4 w-28 rounded-xs bg-ink" />
+                <svg viewBox="0 0 200 120" className="my-1 h-20 w-24" aria-hidden="true">
+                  <polyline
                     fill="none"
-                    stroke="#D9381E"
+                    stroke="#575653"
                     strokeWidth="3"
-                    strokeLinejoin="round"
                     strokeLinecap="round"
-                    animate={{ scaleY: [1, 0.86, 1] }}
-                    style={{ transformBox: "fill-box", transformOrigin: "bottom" }}
-                    transition={{ duration: 0.7, repeat: Infinity, ease: "easeInOut" }}
+                    strokeLinejoin="round"
+                    points={zig}
                   />
-                  <text
-                    x="100"
-                    y="160"
-                    textAnchor="middle"
-                    fontSize="9"
-                    fontWeight="700"
-                    fill="#9F2F2D"
-                    fontFamily="JetBrains Mono, monospace"
-                  >
-                    FRICTION + SPRING NOISE
-                  </text>
-                </>
-              ) : (
-                <>
-                  <motion.g
-                    animate={{ y: [0, -4, 0] }}
-                    transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <rect x="40" y="22" width="120" height="14" rx="3" fill="#111111" stroke="#E4E2DD" />
-                    <ellipse cx="100" cy="58" rx="42" ry="9" fill="#FDEBEC" stroke="#D9381E" strokeWidth="2" />
-                    <text
-                      x="100"
-                      y="61"
-                      textAnchor="middle"
-                      fontSize="8"
-                      fontWeight="700"
-                      fill="#9F2F2D"
-                      fontFamily="JetBrains Mono, monospace"
-                    >
-                      N
-                    </text>
-                  </motion.g>
-                  <ellipse cx="100" cy="110" rx="42" ry="9" fill="#FDEBEC" stroke="#D9381E" strokeWidth="2" />
-                  <text
-                    x="100"
-                    y="113"
-                    textAnchor="middle"
-                    fontSize="8"
-                    fontWeight="700"
-                    fill="#9F2F2D"
-                    fontFamily="JetBrains Mono, monospace"
-                  >
-                    N
-                  </text>
-                  {[0, 1, 2].map((i) => (
-                    <motion.ellipse
-                      key={i}
-                      cx="100"
-                      cy="84"
-                      rx="44"
-                      ry="9"
-                      fill="none"
-                      stroke="#111111"
-                      strokeWidth="1.5"
-                      style={{ transformBox: "fill-box", transformOrigin: "center" }}
-                      animate={{ scaleX: [0.45, 1.15], scaleY: [0.5, 1.2], opacity: [0.8, 0] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: i * 0.66, ease: "easeOut" }}
-                    />
-                  ))}
-                  {[70, 100, 130].map((x, i) => (
-                    <motion.g
-                      key={x}
-                      animate={{ opacity: [0.2, 1, 0.2] }}
-                      transition={{ duration: 1.4, repeat: Infinity, delay: i * 0.2 }}
-                    >
-                      <path
-                        d={`M${x} 77 l0 -9 m-3 3 l3 -3 l3 3`}
-                        stroke="#346538"
-                        strokeWidth="1.8"
-                        fill="none"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d={`M${x} 91 l0 9 m-3 -3 l3 3 l3 -3`}
-                        stroke="#346538"
-                        strokeWidth="1.8"
-                        fill="none"
-                        strokeLinecap="round"
-                      />
-                    </motion.g>
-                  ))}
-                  <text
-                    x="100"
-                    y="160"
-                    textAnchor="middle"
-                    fontSize="9"
-                    fontWeight="700"
-                    fill="#111111"
-                    fontFamily="JetBrains Mono, monospace"
-                  >
-                    N-N REPULSION · 0 CONTACT
-                  </text>
-                </>
-              )}
-            </motion.svg>
+                </svg>
+                <div className="h-4 w-28 rounded-xs bg-ink" />
+                <span className="mt-2 text-[10px] text-ink-muted">
+                  pegas aus seiring waktu · gesekan logam
+                </span>
+              </motion.div>
+            )}
           </AnimatePresence>
         </div>
       </div>
@@ -242,31 +189,36 @@ function BallCoreCard() {
   const [locked, setLocked] = useState(false);
 
   useEffect(() => {
-    const id = setInterval(() => setLocked((l) => !l), 2000);
+    const id = setInterval(() => setLocked((l) => !l), 2400);
     return () => clearInterval(id);
   }, []);
 
   return (
-    <div className="flex h-full flex-col justify-between bg-[#FFFFFF] p-6 sm:p-8 md:col-span-5">
+    <div className="flex h-full flex-col justify-between bg-surface p-6 sm:p-8 md:col-span-5">
       <div>
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E4E2DD] bg-[#EFECE6] px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-[#575653]">
-          <Cpu className="h-3 w-3" /> Ball-Core
-        </span>
-        <h3 className="mt-4 text-xl font-extrabold tracking-tight text-[#111111]">
+        <div className="flex items-center justify-between text-xs text-ink-muted">
+          <span className="inline-flex items-center gap-1.5 text-blue font-semibold">
+            <Cpu className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>02. ball-core positioning</span>
+          </span>
+          <span>45° auto-align</span>
+        </div>
+
+        <h3 className="mt-3 text-xl font-black tracking-tight text-ink">
           20-Magnet Ball-Core & 45° Auto-Align
         </h3>
-        <p className="mt-2.5 text-sm leading-relaxed text-[#575653]">
-          Tarikan magnet dari sudut ke inti membuat layer langsung snap ke posisi presisi saat under-turn hingga 45°.
+        <p className="mt-2 text-sm leading-relaxed text-ink-secondary">
+          Tarikan magnet dari sudut ke inti bola membuat layer langsung snap ke posisi presisi saat under-turn hingga 45°.
         </p>
       </div>
 
       <div className="mt-6">
         <button
           onClick={() => setLocked((l) => !l)}
-          className="relative flex w-full items-center justify-center rounded-lg border border-[#E4E2DD] bg-[#EFECE6] py-5 transition-colors hover:bg-[#EAE6DF]"
-          aria-label="Demo magnetic snap 45 derajat"
+          className="hardware-well relative flex w-full items-center justify-center rounded-lg py-5 transition-colors hover:bg-well-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
+          aria-label="Simulasi snap magnetik ball-core 45 derajat"
         >
-          <svg viewBox="0 0 220 180" className="h-40 w-full max-w-[240px]">
+          <svg viewBox="0 0 220 180" className="h-40 w-full max-w-[240px]" aria-hidden="true">
             {[34, 52, 70].map((r, i) => (
               <motion.circle
                 key={r}
@@ -274,10 +226,10 @@ function BallCoreCard() {
                 cy="86"
                 r={r}
                 fill="none"
-                stroke="#111111"
-                strokeWidth="1"
+                stroke="#1F6C9F"
+                strokeWidth="1.2"
                 strokeDasharray="3 5"
-                animate={{ opacity: locked ? [0.2, 0.7, 0.3] : 0.15, scale: locked ? [1, 1.04, 1] : 1 }}
+                animate={{ opacity: locked ? [0.2, 0.8, 0.3] : 0.15, scale: locked ? [1, 1.04, 1] : 1 }}
                 style={{ transformBox: "fill-box", transformOrigin: "center" }}
                 transition={{ duration: 0.9, delay: i * 0.08 }}
               />
@@ -296,19 +248,19 @@ function BallCoreCard() {
                     height="32"
                     rx="4"
                     fill="#FFFFFF"
-                    stroke={locked ? "#346538" : "#9F2F2D"}
-                    strokeWidth="2"
+                    stroke={locked ? "#2A6B35" : "#D9381E"}
+                    strokeWidth="2.2"
                   />
                   <line
                     x1="110"
                     y1="56"
                     x2="110"
                     y2="70"
-                    stroke={locked ? "#346538" : "#9F2F2D"}
-                    strokeWidth="2"
+                    stroke={locked ? "#2A6B35" : "#D9381E"}
+                    strokeWidth="2.2"
                     strokeLinecap="round"
                   />
-                  <circle cx="110" cy="38" r="4.5" fill={locked ? "#346538" : "#9F2F2D"} />
+                  <circle cx="110" cy="38" r="5" fill={locked ? "#2A6B35" : "#D9381E"} />
                 </g>
               ))}
             </motion.g>
@@ -318,7 +270,7 @@ function BallCoreCard() {
               y="90"
               textAnchor="middle"
               fontSize="10"
-              fontWeight="700"
+              fontWeight="800"
               fill="#FFFFFF"
               fontFamily="JetBrains Mono, monospace"
             >
@@ -329,16 +281,16 @@ function BallCoreCard() {
               y="172"
               textAnchor="middle"
               fontSize="10"
-              fontWeight="700"
-              fill={locked ? "#346538" : "#9F2F2D"}
+              fontWeight="800"
+              fill={locked ? "#2A6B35" : "#D9381E"}
               fontFamily="JetBrains Mono, monospace"
             >
-              {locked ? "0° · LOCKED" : "45° UNDER-TURN"}
+              {locked ? "0° · LOCKED ✓" : "45° UNDER-TURN"}
             </text>
           </svg>
         </button>
-        <p className="mt-2 text-center font-mono text-[10px] uppercase tracking-wider text-[#575653]">
-          Klik diagram untuk simulasi snap
+        <p className="mt-2 text-center text-xs text-ink-muted">
+          klik diagram untuk simulasi snap sudut
         </p>
       </div>
     </div>
@@ -352,119 +304,104 @@ function CornerCuttingCard() {
 
   useEffect(() => {
     const controls = animate(tps, target, {
-      duration: 0.8,
+      duration: 0.6,
       ease: "easeOut",
-      onUpdate: (v) => setTps(v),
+      onUpdate: (v) => setTps(Math.round(v * 10) / 10),
     });
     return () => controls.stop();
-  }, [target]);
-
-  const p = STYLE_PROFILES[idx];
+  }, [idx, target]);
 
   return (
-    <div className="flex h-full flex-col justify-between bg-[#FFFFFF] p-6 sm:p-8 md:col-span-5">
+    <div className="flex h-full flex-col justify-between bg-surface p-6 sm:p-8 md:col-span-5">
       <div>
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E4E2DD] bg-[#EFECE6] px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-[#575653]">
-          <Gauge className="h-3 w-3" /> Zero Lock-Up
-        </span>
-        <h3 className="mt-4 text-xl font-extrabold tracking-tight text-[#111111]">
-          90° Full Corner Cutting & Torpedo
+        <div className="flex items-center justify-between text-xs text-ink-muted">
+          <span className="inline-flex items-center gap-1.5 text-green font-semibold">
+            <Gauge className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>03. corner cutting dan tps</span>
+          </span>
+          <span>90° total cut</span>
+        </div>
+
+        <h3 className="mt-3 text-xl font-black tracking-tight text-ink">
+          Corner Cutting 55° & Reverse 35°
         </h3>
-        <p className="mt-2.5 text-sm leading-relaxed text-[#575653]">
-          Sudut corner cutting 90° dengan desain Torpedo anti-pop: zero lock-up di kecepatan TPS tinggi.
+        <p className="mt-2 text-sm leading-relaxed text-ink-secondary">
+          Layer berputar mulus tanpa lock-up bahkan ketika eksekusi algoritma cepat di sudut ekstrem hingga 55 derajat.
         </p>
 
-        {/* Method Tabs */}
-        <div className="mt-4 flex gap-1.5">
-          {STYLE_PROFILES.map((s, i) => (
+        {/* Style switcher */}
+        <div className="mt-4 flex flex-wrap gap-1.5">
+          {STYLE_PROFILES.map((p, i) => (
             <button
-              key={s.key}
+              key={p.key}
               onClick={() => setIdx(i)}
-              className={`rounded-md px-3 py-1 font-mono text-xs font-bold transition-colors ${
-                i === idx
-                  ? "bg-[#111111] text-white"
-                  : "border border-[#E4E2DD] bg-[#FFFFFF] text-[#575653] hover:bg-[#EFECE6]"
+              className={`rounded-md px-3 py-1 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion ${
+                idx === i
+                  ? "bg-ink text-surface shadow-xs"
+                  : "border border-border bg-well text-ink-secondary hover:text-ink"
               }`}
             >
-              {s.key}
+              {p.key}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="mt-6 rounded-lg border border-[#E4E2DD] bg-[#EFECE6] p-4">
-        <div className="flex items-end justify-between">
-          <div>
-            <div className="font-mono text-4xl font-extrabold text-[#111111]">{tps.toFixed(1)}</div>
-            <div className="font-mono text-[10px] uppercase tracking-wider text-[#575653]">
-              Peak TPS · {p.key}
+      <div className="mt-6">
+        <div className="hardware-well rounded-lg p-5">
+          <div className="flex items-end justify-between">
+            <div>
+              <div className="font-mono text-4xl font-black tracking-tight text-ink">
+                {tps.toFixed(1)}
+              </div>
+              <div className="text-[11px] text-ink-muted">
+                turns per second (tps)
+              </div>
+            </div>
+            <div className="text-right text-xs">
+              <div className="font-bold text-ink">Normal 55° / Rev 35°</div>
+              <div className="text-ink-secondary">Zero Corner Twist</div>
             </div>
           </div>
-          <svg viewBox="0 0 80 60" className="h-14 w-18">
-            <path
-              d="M8 52 A44 44 0 0 1 52 8"
-              fill="none"
-              stroke="#DCD9D2"
-              strokeWidth="5"
-              strokeLinecap="round"
-            />
-            <motion.path
-              d="M8 52 A44 44 0 0 1 52 8"
-              fill="none"
-              stroke="#111111"
-              strokeWidth="5"
-              strokeLinecap="round"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 1.4, repeat: Infinity, repeatDelay: 0.8, ease: "easeInOut" }}
-            />
-            <text
-              x="56"
-              y="54"
-              fontSize="12"
-              fontWeight="800"
-              fill="#111111"
-              fontFamily="JetBrains Mono, monospace"
-            >
-              90°
-            </text>
-          </svg>
-        </div>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={p.key}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            className="mt-3"
-          >
-            <code className="block rounded-md border border-[#E4E2DD] bg-[#FFFFFF] px-3 py-2 font-mono text-[11px] leading-relaxed text-[#111111]">
-              {p.alg}
+          <div className="mt-4 h-2.5 overflow-hidden rounded-full border border-border bg-surface">
+            <motion.div
+              className="h-full rounded-full bg-green"
+              animate={{ width: `${(tps / 14) * 100}%` }}
+              transition={{ type: "spring", stiffness: 120, damping: 20 }}
+            />
+          </div>
+
+          <div className="mt-4 border-t border-border pt-3">
+            <span className="text-[11px] text-ink-muted">algoritma tes wca:</span>
+            <code className="mt-1 block rounded-md border border-border bg-surface px-2.5 py-1.5 font-mono text-xs text-ink font-semibold">
+              {STYLE_PROFILES[idx].alg}
             </code>
-            <p className="mt-2 flex items-center gap-1.5 text-xs text-[#575653]">
-              <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-[#346538]" /> {p.note}
+            <p className="mt-2 flex items-center gap-1.5 text-xs text-ink-secondary">
+              <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-green" aria-hidden="true" />
+              <span>{STYLE_PROFILES[idx].note}</span>
             </p>
-          </motion.div>
-        </AnimatePresence>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
 function TuningCard() {
-  const [tension, setTension] = useState(2);
+  const [tension, setTension] = useState(3);
   const [travel, setTravel] = useState(3);
-  const avg = (tension + travel) / 2;
-  const speed = Math.round(((7 - avg) / 6) * 100);
-  const control = Math.round((avg / 6) * 100);
 
-  const profile =
-    avg <= 2.5
-      ? { name: "Speed Demon Setup" }
-      : avg <= 4
-      ? { name: "Balanced All-Rounder" }
-      : { name: "Precision Control Setup" };
+  const profile = useMemo(() => {
+    if (tension <= 2 && travel <= 2) return { name: "Ultra-Fast / Loose (TPS Rush)" };
+    if (tension >= 5 && travel >= 5) return { name: "Controllable / Tight (Anti-Pop)" };
+    if (tension >= 4 && travel <= 3) return { name: "Magnetic Snappy (High Accuracy)" };
+    if (tension <= 3 && travel >= 4) return { name: "Fluid / Gliding (One-Handed / OH)" };
+    return { name: "Factory Balanced (All-Round Competitor)" };
+  }, [tension, travel]);
+
+  const speed = useMemo(() => Math.round(100 - (tension - 1) * 10 - (travel - 1) * 6), [tension, travel]);
+  const control = useMemo(() => Math.round(25 + (tension - 1) * 11 + (travel - 1) * 4), [tension, travel]);
 
   const renderRow = ({
     label,
@@ -476,9 +413,9 @@ function TuningCard() {
     setValue: (n: number) => void;
   }) => (
     <div>
-      <div className="mb-2 flex items-center justify-between font-mono text-[11px] uppercase tracking-wider text-[#575653]">
+      <div className="mb-2 flex items-center justify-between text-xs text-ink-secondary">
         <span>{label}</span>
-        <span className="font-bold text-[#111111]">Level {value}</span>
+        <span className="font-bold text-ink">Level {value}</span>
       </div>
       <div className="grid grid-cols-6 gap-1.5">
         {[1, 2, 3, 4, 5, 6].map((n) => (
@@ -486,10 +423,10 @@ function TuningCard() {
             key={n}
             onClick={() => setValue(n)}
             aria-label={`${label} level ${n}`}
-            className={`rounded-md border py-2 font-mono text-xs font-bold transition-colors ${
+            className={`rounded-md py-2 font-mono text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion ${
               n === value
-                ? "border-[#111111] bg-[#111111] text-white"
-                : "border-[#E4E2DD] bg-[#FFFFFF] text-[#575653] hover:bg-[#EFECE6]"
+                ? "bg-ink text-surface shadow-xs"
+                : "border border-border bg-well text-ink-secondary hover:text-ink hover:bg-well-subtle"
             }`}
           >
             {n}
@@ -500,16 +437,21 @@ function TuningCard() {
   );
 
   return (
-    <div className="flex h-full flex-col justify-between bg-[#FFFFFF] p-6 sm:p-8 md:col-span-7">
+    <div className="flex h-full flex-col justify-between bg-surface p-6 sm:p-8 md:col-span-7">
       <div>
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E4E2DD] bg-[#EFECE6] px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-[#575653]">
-          <Sliders className="h-3 w-3" /> 12 Custom Settings
-        </span>
-        <h3 className="mt-4 text-2xl font-extrabold tracking-tight text-[#111111]">
+        <div className="flex items-center justify-between text-xs text-ink-muted">
+          <span className="inline-flex items-center gap-1.5 text-ink font-semibold">
+            <Sliders className="h-3.5 w-3.5 text-vermilion" aria-hidden="true" />
+            <span>04. ges pro+ hardware matrix</span>
+          </span>
+          <span>12 setelan presisi</span>
+        </div>
+
+        <h3 className="mt-3 text-2xl font-black tracking-tight text-ink">
           Dual-Adjustment GES Pro+ & Custom Tuning
         </h3>
-        <p className="mt-2.5 text-sm leading-relaxed text-[#575653]">
-          Atur Tension (6 level) dan Center Travel (6 level) secara mandiri untuk total 12 setelan presisi.
+        <p className="mt-2 text-sm leading-relaxed text-ink-secondary">
+          Atur elastisitas magnet dan center travel distance secara mandiri untuk total 12 kombinasi setelan putaran.
         </p>
 
         <div className="mt-5 space-y-4">
@@ -517,31 +459,34 @@ function TuningCard() {
           {renderRow({ label: "Center Travel", value: travel, setValue: setTravel })}
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-5 flex flex-wrap gap-2">
           <button
             onClick={() => {
               setTension(2);
               setTravel(3);
             }}
-            className="rounded-full border border-[#E4E2DD] bg-[#FFFFFF] px-3 py-1 text-xs font-semibold text-[#111111] transition-colors hover:bg-[#EFECE6]"
+            className="tactile-btn-light inline-flex items-center gap-1.5 rounded-md px-3.5 py-1.5 text-xs font-bold text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
           >
-            Preset Speed (2 / 3)
+            <Zap className="h-3 w-3 text-vermilion" aria-hidden="true" />
+            <span>preset speed (2 / 3)</span>
           </button>
           <button
             onClick={() => {
               setTension(5);
               setTravel(4);
             }}
-            className="rounded-full border border-[#E4E2DD] bg-[#FFFFFF] px-3 py-1 text-xs font-semibold text-[#111111] transition-colors hover:bg-[#EFECE6]"
+            className="tactile-btn-light inline-flex items-center gap-1.5 rounded-md px-3.5 py-1.5 text-xs font-bold text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
           >
-            Preset Akurasi (5 / 4)
+            <Target className="h-3 w-3 text-blue" aria-hidden="true" />
+            <span>preset akurasi (5 / 4)</span>
           </button>
         </div>
       </div>
 
-      <div className="mt-6 rounded-lg border border-[#E4E2DD] bg-[#EFECE6] p-4">
-        <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-wider text-[#575653]">
-          <Activity className="h-3.5 w-3.5" /> Profil Setelan Aktif
+      <div className="hardware-well mt-6 rounded-lg p-4">
+        <div className="flex items-center gap-2 text-xs text-ink-muted">
+          <Activity className="h-3.5 w-3.5 text-vermilion" aria-hidden="true" />
+          <span>profil setelan aktif</span>
         </div>
         <AnimatePresence mode="wait">
           <motion.div
@@ -552,27 +497,27 @@ function TuningCard() {
             transition={{ duration: 0.15 }}
             className="mt-2"
           >
-            <div className="text-base font-extrabold text-[#111111]">{profile.name}</div>
+            <div className="text-base font-black text-ink">{profile.name}</div>
             <div className="mt-2.5 space-y-2">
-              <div className="rounded-md border border-[#E4E2DD] bg-[#FFFFFF] p-3 text-xs">
-                <span className="font-bold text-[#111111]">
+              <div className="rounded-md border border-border bg-surface p-3 text-xs shadow-xs">
+                <span className="font-bold text-ink">
                   Tension {tension}: {TENSION_LEVELS[tension - 1].title}
                 </span>
-                <p className="mt-0.5 text-[#575653]">{TENSION_LEVELS[tension - 1].desc}</p>
+                <p className="mt-0.5 text-ink-secondary">{TENSION_LEVELS[tension - 1].desc}</p>
               </div>
-              <div className="rounded-md border border-[#E4E2DD] bg-[#FFFFFF] p-3 text-xs">
-                <span className="font-bold text-[#111111]">
+              <div className="rounded-md border border-border bg-surface p-3 text-xs shadow-xs">
+                <span className="font-bold text-ink">
                   Travel {travel}: {TRAVEL_LEVELS[travel - 1].title}
                 </span>
-                <p className="mt-0.5 text-[#575653]">{TRAVEL_LEVELS[travel - 1].desc}</p>
+                <p className="mt-0.5 text-ink-secondary">{TRAVEL_LEVELS[travel - 1].desc}</p>
               </div>
             </div>
           </motion.div>
         </AnimatePresence>
 
         <div className="mt-4 space-y-3">
-          <Meter label="Speed Feel" value={speed} display={`${speed}%`} />
-          <Meter label="Control Feel" value={control} display={`${control}%`} />
+          <Meter label="Speed Feel" value={speed} display={`${speed}%`} barColor="bg-vermilion" />
+          <Meter label="Control Feel" value={control} display={`${control}%`} barColor="bg-blue" />
         </div>
       </div>
     </div>
@@ -584,13 +529,13 @@ export function BentoSection() {
     <section id="fitur" className="relative scroll-mt-20 px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <SectionHeader
-          eyebrow="Rekayasa Mekanik"
+          index="01 // rekayasa presisi"
           title="Teknologi Rekayasa Presisi di Balik Setiap Putaran"
           subtitle="Speedcuber profesional beralih ke MagLev dan Ball-Core karena konsistensi: tanpa pegas yang aus, tanpa layer miring, dan tensi yang sepenuhnya dapat disesuaikan."
         />
 
         {/* Exposed 1px hairline grid: 12-column layout */}
-        <div className="grid overflow-hidden rounded-xl border border-[#E4E2DD] bg-[#E4E2DD] p-px gap-px md:grid-cols-12">
+        <div className="grid overflow-hidden rounded-xl border border-border bg-border p-px gap-px md:grid-cols-12 shadow-sm">
           {/* Row 1: MagLevCard (7 cols) + BallCoreCard (5 cols) */}
           <MagLevCard />
           <BallCoreCard />
