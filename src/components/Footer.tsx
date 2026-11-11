@@ -105,7 +105,7 @@ export function Footer() {
               Navigasi
             </h4>
             <ul className="mt-4 space-y-2 text-xs sm:text-sm">
-              {[...NAV_LINKS, { label: "FAQ", id: "testimoni" }].map((link) => (
+              {NAV_LINKS.map((link) => (
                 <li key={link.id}>
                   <button
                     onClick={() => scrollToId(link.id)}
