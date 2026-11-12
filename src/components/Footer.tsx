@@ -126,13 +126,13 @@ export function Footer() {
             <div className="mt-3.5 grid grid-cols-2 gap-2 text-xs sm:text-sm">
               {STORE_CHANNELS.map((ch) => (
                 <a
-                  key={ch.name}
+                  key={ch.label}
                   href={ch.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-between rounded-md border border-border bg-surface px-3 py-2 text-ink transition-colors hover:bg-well focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
                 >
-                  <span>{ch.name}</span>
+                  <span>{ch.label}</span>
                   <ExternalLink className="h-3 w-3 text-ink-muted" aria-hidden="true" />
                 </a>
               ))}
