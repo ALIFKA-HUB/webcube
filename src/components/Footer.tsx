@@ -13,81 +13,82 @@ import { NAV_LINKS, STORE_CHANNELS, WA_CONSULT, scrollToId } from "../data/conte
 
 export function Footer() {
   return (
-    <footer className="relative px-4 pb-12 pt-8 sm:px-6 lg:px-8">
+    <footer className="relative px-4 pb-12 pt-8 sm:px-6 lg:px-8 border-t border-border">
       <div className="mx-auto max-w-7xl">
-        {/* Final Dispatch CTA: High-contrast architectural block */}
-        <div className="mb-16 overflow-hidden rounded-xl bg-ink p-8 text-canvas sm:p-12">
-          <div className="max-w-3xl">
-            <span className="inline-flex items-center gap-1.5 rounded-md border border-white/20 bg-white/10 px-3 py-1 text-xs text-canvas">
-              konsultasi dan garansi tuning cuberlab
+        {/* Final Minimalist CTA Banner */}
+        <div className="mb-16 overflow-hidden rounded-3xl border border-border bg-surface p-8 text-center sm:p-14 shadow-lg flex flex-col items-center">
+          <div className="max-w-2xl">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-well px-3.5 py-1 text-xs text-ink-secondary">
+              <span className="h-1.5 w-1.5 rounded-full bg-vermilion" aria-hidden="true" />
+              <span>Konsultasi & Garansi Tuning Gratis</span>
             </span>
 
-            <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl leading-tight">
+            <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl lg:text-5xl leading-tight">
               Siap cetak personal best baru minggu ini?
             </h2>
 
-            <p className="mt-3 text-sm leading-relaxed text-white/80 sm:text-base">
+            <p className="mt-4 text-sm leading-relaxed text-ink-secondary sm:text-base">
               Konsultasi gratis dengan admin kami, tentukan setelan tensi sesuai preferensi tanganmu, dan terima rubik yang sudah di-lube siap pakai pecah rekor.
             </p>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <a
                 href={WA_CONSULT}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="tactile-btn-vermilion inline-flex items-center justify-center gap-2 rounded-md px-6 py-3.5 text-sm font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
+                className="btn-primary inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion whitespace-nowrap"
               >
-                <MessageCircle className="h-4 w-4 text-canvas" aria-hidden="true" />
+                <MessageCircle className="h-4 w-4" aria-hidden="true" />
                 <span>Pesan via WhatsApp</span>
-                <ArrowRight className="h-4 w-4 text-canvas" aria-hidden="true" />
+                <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
               </a>
 
               <button
                 onClick={() => scrollToId("katalog")}
-                className="tactile-btn-dark inline-flex items-center justify-center gap-2 rounded-md px-6 py-3.5 text-sm font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
+                className="btn-ghost inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-xs font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion whitespace-nowrap"
               >
-                <ShoppingBag className="h-4 w-4 text-canvas" aria-hidden="true" />
+                <ShoppingBag className="h-4 w-4" aria-hidden="true" />
                 <span>Lihat Katalog Flagship</span>
               </button>
             </div>
 
-            {/* Trust indicators strip */}
-            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-white/15 pt-6 text-xs text-white/80">
+            {/* Trust strip */}
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 border-t border-border pt-6 text-xs text-ink-secondary">
               <span className="inline-flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4 text-white" aria-hidden="true" />
+                <ShieldCheck className="h-3.5 w-3.5 text-ink" aria-hidden="true" />
                 <span>100% Original GAN & MoYu</span>
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <Droplets className="h-4 w-4 text-white" aria-hidden="true" />
+                <Droplets className="h-3.5 w-3.5 text-ink" aria-hidden="true" />
                 <span>Free Setup Lube</span>
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <Truck className="h-4 w-4 text-white" aria-hidden="true" />
+                <Truck className="h-3.5 w-3.5 text-ink" aria-hidden="true" />
                 <span>Kirim Seluruh Indonesia</span>
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <VolumeX className="h-4 w-4 text-white" aria-hidden="true" />
-                <span>Garansi Tuning Resmi</span>
+                <VolumeX className="h-3.5 w-3.5 text-ink" aria-hidden="true" />
+                <span>Garansi Resmi</span>
               </span>
             </div>
           </div>
         </div>
 
-        {/* Footer Index */}
-        <div className="grid grid-cols-1 gap-10 border-t border-border pt-12 md:grid-cols-12 md:gap-12">
+        {/* Footer Index Grid */}
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-12">
           {/* Store Credentials */}
           <div className="md:col-span-5">
             <div className="flex items-center gap-2.5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-md bg-ink text-canvas">
-                <Box className="h-4 w-4" aria-hidden="true" />
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-well text-ink">
+                <Box className="h-3.5 w-3.5" aria-hidden="true" />
               </span>
-              <span className="text-base font-extrabold tracking-tight text-ink">
-                CuberLab ID
+              <span className="text-base font-bold tracking-tight text-ink">
+                CuberLab<span className="text-vermilion">.</span>
               </span>
             </div>
 
-            <p className="mt-3.5 max-w-sm text-xs leading-relaxed text-ink-secondary sm:text-sm">
-              Flagship store speedcube dan magnetic puzzle Indonesia. Kami menghadirkan unit resmi GAN dan MoYu dengan layanan free setup lube, tuning profesional, serta pengiriman aman bergaransi.
+            <p className="mt-3.5 max-w-sm text-xs leading-relaxed text-ink-secondary">
+              Flagship store speedcube dan magnetic puzzle resmi Indonesia. Kami menyediakan unit resmi GAN dan MoYu dengan layanan free setup lube profesional.
             </p>
 
             <div className="mt-4 flex items-center gap-2 text-xs text-ink-secondary">
@@ -95,21 +96,21 @@ export function Footer() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-green" />
               </span>
-              <span>Admin online: Senin - Sabtu, 09.00 - 21.00 WIB</span>
+              <span>Admin Online: Senin - Sabtu, 09.00 - 21.00 WIB</span>
             </div>
           </div>
 
           {/* Navigation Links */}
           <div className="md:col-span-3">
-            <h4 className="text-xs font-bold text-ink">
+            <h4 className="text-xs font-semibold text-ink">
               navigasi
             </h4>
-            <ul className="mt-3.5 space-y-2 text-xs sm:text-sm">
+            <ul className="mt-3.5 space-y-2 text-xs">
               {NAV_LINKS.map((link) => (
                 <li key={link.id}>
                   <button
                     onClick={() => scrollToId(link.id)}
-                    className="text-ink-secondary transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
+                    className="text-ink-secondary transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion whitespace-nowrap"
                   >
                     {link.label}
                   </button>
@@ -120,17 +121,17 @@ export function Footer() {
 
           {/* Official Channels */}
           <div className="md:col-span-4">
-            <h4 className="text-xs font-bold text-ink">
+            <h4 className="text-xs font-semibold text-ink">
               kanal resmi
             </h4>
-            <div className="mt-3.5 grid grid-cols-2 gap-2 text-xs sm:text-sm">
+            <div className="mt-3.5 grid grid-cols-2 gap-2 text-xs">
               {STORE_CHANNELS.map((ch) => (
                 <a
                   key={ch.label}
                   href={ch.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-between rounded-md border border-border bg-surface px-3 py-2 text-ink transition-colors hover:bg-well focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
+                  className="inline-flex items-center justify-between rounded-xl border border-border bg-well px-3 py-2 text-ink-secondary transition-colors hover:bg-well-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion whitespace-nowrap"
                 >
                   <span>{ch.label}</span>
                   <ExternalLink className="h-3 w-3 text-ink-muted" aria-hidden="true" />
@@ -140,7 +141,7 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Legal & Compliance Notice */}
+        {/* Legal & Notice */}
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 text-center text-xs text-ink-muted sm:flex-row sm:text-left">
           <p>© 2026 CuberLab ID. Seluruh hak cipta dilindungi.</p>
           <p>GAN dan MoYu adalah merek dagang milik pemegang hak masing-masing.</p>

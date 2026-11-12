@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
-import { Check, Copy, Hand, Play, RotateCcw, Square } from "lucide-react";
+import { Check, Copy, Play, RotateCcw, Sparkles, Square } from "lucide-react";
 import { PRODUCTS } from "../data/products";
 import { WA_NUMBER, formatRupiah, formatTime } from "../data/content";
 import type { Phase, Product } from "../types";
@@ -116,7 +116,7 @@ export function TimerSection() {
     else if (phaseRef.current === "holding") setPhase("idle");
   }, [setPhase, startTimer]);
 
-  // Spacebar Support when Timer is on screen
+  // Spacebar Support when Timer is in view
   useEffect(() => {
     const isTyping = (t: EventTarget | null) =>
       t instanceof HTMLElement &&
@@ -174,7 +174,7 @@ export function TimerSection() {
     navigator.clipboard?.writeText(code).catch(() => undefined);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
-    const msg = `Halo CuberLab ID, saya mau klaim voucher ${code} (diskon ekstra Rp 50.000 seri MagLev). Waktu solve saya ${
+    const msg = `Halo CuberLab ID, saya mau klaim voucher ${code} (diskon ekstra Rp 50.000). Waktu solve saya ${
       last !== undefined ? formatTime(last) : "-"
     }. Mohon rekomendasi rubiknya ya!`;
     window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank", "noopener,noreferrer");
@@ -189,271 +189,166 @@ export function TimerSection() {
 
   const hint =
     phase === "holding"
-      ? "tahan sensor... tunggu lampu indikator hijau"
+      ? "Tahan sensor... tunggu lampu siap hijau"
       : phase === "ready"
-      ? "lepas spasi atau sentuhan untuk mulai waktu"
+      ? "Lepas spasi atau jari untuk mulai waktu!"
       : phase === "running"
-      ? "tekan spasi atau sentuh sensor untuk berhenti"
-      : "tahan spasi atau tekan kedua sensor untuk bersiap";
+      ? "Tekan spasi atau sentuh layar untuk berhenti"
+      : "Tahan tombol [Spasi] atau sentuh area timer untuk bersiap";
 
   return (
-    <section id="timer" ref={sectionRef} className="relative scroll-mt-20 px-4 py-16 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-5xl">
+    <section id="timer" ref={sectionRef} className="relative scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
         <SectionHeader
-          index="03 // wca tournament bench"
-          title="Laboratorium Simulasi Timer & Scramble"
-          subtitle="Uji kecepatan dengan 20 langkah acakan resmi WCA. Jalankan stopwatch, catat rata-rata Ao5, dan dapatkan rekomendasi hardware presisi."
+          badge="WCA Tournament Timer"
+          title="Uji Kecepatan Putaranmu"
+          subtitle="Gunakan scramble acak standar WCA, tahan tombol spasi atau sentuh layar untuk mencatat rekor personal best Anda."
+          align="center"
         />
 
-        {/* Tournament Workbench Layout */}
-        <div className="tactile-card overflow-hidden rounded-xl p-6 sm:p-8">
-          {/* WCA Scramble Bar */}
-          <div>
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <span className="text-xs text-ink-muted">
-                wca 3x3 scramble · 20 langkah kompetisi
+        {/* Stopwatch Main Bench Card */}
+        <div className="spotlight-stage max-w-3xl mx-auto rounded-3xl border border-border bg-surface p-8 sm:p-12 text-center relative overflow-hidden">
+          {/* Scramble Strip */}
+          <div className="relative z-10 flex flex-col items-center">
+            <div className="inline-flex max-w-2xl flex-wrap items-center justify-center gap-2 rounded-2xl border border-border bg-well px-4 py-2 text-xs">
+              <span className="text-ink-muted">scramble:</span>
+              <span className="font-mono font-semibold text-ink select-all">
+                {scramble.join(" ")}
               </span>
-              <button
-                onClick={newScramble}
-                className="tactile-btn-light inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-bold text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
-              >
-                <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-                <span>Acak Ulang</span>
-              </button>
-            </div>
-
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={scramble.join("")}
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -4 }}
-                transition={{ duration: 0.15 }}
-                className="hardware-well mt-3 flex flex-wrap gap-x-3 gap-y-1.5 rounded-lg p-4 font-mono text-base font-bold text-ink sm:text-lg"
-              >
-                {scramble.map((m, i) => (
-                  <span key={i} className="rounded bg-surface px-2 py-0.5 border border-border shadow-2xs">
-                    {m}
-                  </span>
-                ))}
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Authentic StackMat Style Bench Display */}
-          <div
-            onPointerDown={(e) => {
-              if ((e.target as HTMLElement).closest("button")) return;
-              if (e.pointerType === "mouse") return;
-              pressDown();
-            }}
-            onPointerUp={(e) => {
-              if (e.pointerType === "mouse") return;
-              pressUp();
-            }}
-            className="hardware-well relative mt-6 select-none rounded-xl p-6 text-center sm:p-10 border border-border"
-            style={{ touchAction: "manipulation" }}
-          >
-            {/* Top Chronometer Status Lamps */}
-            <div className="flex items-center justify-center gap-6 text-xs text-ink-muted">
-              <div className="flex items-center gap-2">
-                <span
-                  className={`h-2.5 w-2.5 rounded-full transition-colors ${
-                    phase === "holding"
-                      ? "bg-vermilion"
-                      : "bg-border-strong"
-                  }`}
-                  aria-hidden="true"
-                />
-                <span>hold</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span
-                  className={`h-2.5 w-2.5 rounded-full transition-colors ${
-                    phase === "ready"
-                      ? "bg-green"
-                      : "bg-border-strong"
-                  }`}
-                  aria-hidden="true"
-                />
-                <span>ready</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span
-                  className={`h-2.5 w-2.5 rounded-full transition-colors ${
-                    phase === "running"
-                      ? "bg-ink"
-                      : "bg-border-strong"
-                  }`}
-                  aria-hidden="true"
-                />
-                <span>timing</span>
-              </div>
-            </div>
-
-            {/* Main Digital Time Numbers */}
-            <motion.div
-              className={`mt-4 font-mono text-6xl font-black tabular-nums tracking-tight sm:text-8xl ${timerColor}`}
-              animate={{ scale: phase === "ready" ? 1.03 : 1 }}
-              transition={{ type: "spring", stiffness: 350, damping: 18 }}
-            >
-              {formatTime(phase === "holding" || phase === "ready" ? 0 : elapsed)}
-            </motion.div>
-
-            {/* Instruction Banner */}
-            <p className="mt-3 text-xs text-ink-secondary sm:text-sm">
-              {hint}
-            </p>
-
-            {/* Dual Sensor Palm Pads */}
-            <div className="mt-8 grid grid-cols-2 gap-4">
-              <button
-                type="button"
-                onPointerDown={pressDown}
-                onPointerUp={pressUp}
-                className={`flex h-20 items-center justify-center gap-3 rounded-lg border text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion ${
-                  phase === "holding" || phase === "ready"
-                    ? "border-vermilion bg-vermilion-soft text-vermilion"
-                    : "border-border bg-surface text-ink-secondary hover:bg-well"
-                }`}
-              >
-                <Hand className="h-5 w-5" aria-hidden="true" />
-                <span>sensor pad kiri</span>
-              </button>
-
-              <button
-                type="button"
-                onPointerDown={pressDown}
-                onPointerUp={pressUp}
-                className={`flex h-20 items-center justify-center gap-3 rounded-lg border text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion ${
-                  phase === "holding" || phase === "ready"
-                    ? "border-vermilion bg-vermilion-soft text-vermilion"
-                    : "border-border bg-surface text-ink-secondary hover:bg-well"
-                }`}
-              >
-                <Hand className="h-5 w-5" aria-hidden="true" />
-                <span>sensor pad kanan</span>
-              </button>
-            </div>
-
-            {/* Tactile Control Buttons */}
-            <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <button
-                onClick={toggleButton}
-                className="tactile-btn-dark inline-flex min-w-[200px] items-center justify-center gap-2 rounded-md px-6 py-3.5 text-sm font-bold whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
-              >
-                {phase === "running" ? (
-                  <span className="inline-flex items-center gap-2 whitespace-nowrap">
-                    <Square className="h-4 w-4" aria-hidden="true" />
-                    <span className="whitespace-nowrap">Hentikan Timer</span>
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center gap-2 whitespace-nowrap">
-                    <Play className="h-4 w-4" aria-hidden="true" />
-                    <span className="whitespace-nowrap">Mulai Timer</span>
-                  </span>
-                )}
-              </button>
-
-              {solves.length > 0 && (
+              <div className="flex items-center gap-1 ml-1 border-l border-border pl-2">
                 <button
                   onClick={() => {
-                    setSolves([]);
-                    setElapsed(0);
-                    setPhase("idle");
+                    navigator.clipboard.writeText(scramble.join(" "));
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
                   }}
-                  className="tactile-btn-light rounded-md px-4 py-3 text-xs font-bold text-ink-secondary whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
+                  className="rounded-md p-1 text-ink-muted hover:text-ink hover:bg-surface transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
+                  aria-label="Salin scramble"
+                  title="Salin scramble"
                 >
-                  <span className="whitespace-nowrap">Reset Sesi</span>
+                  {copied ? <Check className="h-3.5 w-3.5 text-green" /> : <Copy className="h-3.5 w-3.5" />}
                 </button>
-              )}
+                <button
+                  onClick={newScramble}
+                  className="rounded-md p-1 text-ink-muted hover:text-ink hover:bg-surface transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
+                  aria-label="Acak ulang scramble"
+                  title="Acak ulang"
+                >
+                  <RotateCcw className="h-3.5 w-3.5" />
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* Session Telemetry Grid */}
-          <div className="mt-6 grid grid-cols-3 divide-x divide-border rounded-lg border border-border bg-surface p-4 text-center">
-            <div>
-              <div className="text-[10px] text-ink-muted">waktu terakhir</div>
-              <div className="mt-1 font-mono text-base font-black text-ink sm:text-lg">
-                {last !== undefined ? formatTime(last) : "-"}
-              </div>
+          {/* Interactive Timer Chronometer Pad */}
+          <div
+            onMouseDown={pressDown}
+            onMouseUp={pressUp}
+            onTouchStart={pressDown}
+            onTouchEnd={pressUp}
+            className="relative z-10 my-10 py-6 select-none cursor-pointer group"
+          >
+            <div
+              className={`font-mono text-6xl sm:text-7xl lg:text-8xl font-black tracking-tight transition-colors duration-150 ${timerColor}`}
+            >
+              {formatTime(elapsed)}
             </div>
-            <div>
-              <div className="text-[10px] text-ink-muted">personal best (pb)</div>
-              <div className="mt-1 font-mono text-base font-black text-vermilion sm:text-lg">
+
+            {/* Hint & Status Pill */}
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-border bg-well px-4 py-1.5 text-xs text-ink-secondary">
+              <span
+                className={`h-2 w-2 rounded-full ${
+                  phase === "holding"
+                    ? "bg-vermilion animate-pulse"
+                    : phase === "ready"
+                    ? "bg-green animate-ping"
+                    : phase === "running"
+                    ? "bg-blue animate-pulse"
+                    : "bg-ink-muted"
+                }`}
+              />
+              <span>{hint}</span>
+            </div>
+          </div>
+
+          {/* Manual Control Button for Touch / Quick Access */}
+          <div className="relative z-10 flex justify-center mb-8">
+            <button
+              onClick={toggleButton}
+              className={`inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion whitespace-nowrap ${
+                phase === "running"
+                  ? "bg-vermilion text-white hover:bg-red-600 shadow-md"
+                  : "btn-primary"
+              }`}
+            >
+              {phase === "running" ? (
+                <>
+                  <Square className="h-3.5 w-3.5 fill-current" />
+                  <span>Hentikan Timer</span>
+                </>
+              ) : (
+                <>
+                  <Play className="h-3.5 w-3.5 fill-current" />
+                  <span>Mulai Timer</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Session Statistics Bar */}
+          <div className="relative z-10 grid grid-cols-2 gap-3 sm:grid-cols-4 border-t border-border pt-6 text-xs">
+            <div className="rounded-2xl border border-border bg-well p-3">
+              <div className="text-ink-muted text-[11px]">Terbaik (PB)</div>
+              <div className="font-mono text-base font-bold text-ink mt-0.5">
                 {best !== null ? formatTime(best) : "-"}
               </div>
             </div>
-            <div>
-              <div className="text-[10px] text-ink-muted">average of 5 (ao5)</div>
-              <div className="mt-1 font-mono text-base font-black text-green sm:text-lg">
+            <div className="rounded-2xl border border-border bg-well p-3">
+              <div className="text-ink-muted text-[11px]">Average of 5 (Ao5)</div>
+              <div className="font-mono text-base font-bold text-ink mt-0.5">
                 {ao5 !== null ? formatTime(ao5) : "-"}
+              </div>
+            </div>
+            <div className="rounded-2xl border border-border bg-well p-3">
+              <div className="text-ink-muted text-[11px]">Solve Terakhir</div>
+              <div className="font-mono text-base font-bold text-ink mt-0.5">
+                {last !== undefined ? formatTime(last) : "-"}
+              </div>
+            </div>
+            <div className="rounded-2xl border border-border bg-well p-3">
+              <div className="text-ink-muted text-[11px]">Total Solves</div>
+              <div className="font-mono text-base font-bold text-ink mt-0.5">
+                {solves.length}
               </div>
             </div>
           </div>
 
-          {/* Recent Solves Chips */}
-          {solves.length > 0 && (
-            <div className="mt-4 flex flex-wrap items-center gap-1.5 text-xs">
-              <span className="text-ink-muted">sesi ({solves.length}):</span>
-              {solves.slice(0, 8).map((time, idx) => (
-                <span
-                  key={idx}
-                  className="rounded border border-border bg-well px-2 py-0.5 font-mono text-ink"
-                >
-                  #{idx + 1}: {formatTime(time)}
-                </span>
-              ))}
-            </div>
-          )}
-
-          {/* Recommendation & Voucher Claim Box */}
+          {/* Dynamic Recommendation Card (revealed when solve completes) */}
           <AnimatePresence>
             {rec && (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.2 }}
-                className="overflow-hidden"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 12 }}
+                className="mt-8 rounded-2xl border border-vermilion/30 bg-vermilion-soft p-5 text-left text-xs sm:text-sm text-ink-secondary relative z-10"
               >
-                <div className="hardware-well mt-6 rounded-lg p-5">
-                  <div className="flex items-center gap-2">
-                    <span className="rounded-md border border-vermilion/30 bg-vermilion-soft px-2 py-0.5 text-xs font-semibold text-vermilion">
-                      rekomendasi rubik
-                    </span>
-                    <span className="text-xs text-ink font-semibold">
-                      waktu solve: <span className="font-mono">{last !== undefined ? formatTime(last) : "-"}</span>
-                    </span>
-                  </div>
-
-                  <p className="mt-2 text-sm leading-relaxed text-ink-secondary">
-                    {rec.headline}
-                  </p>
-
-                  <div className="mt-4 flex flex-col items-start justify-between gap-4 border-t border-border pt-4 sm:flex-row sm:items-center">
-                    <div>
-                      <div className="text-xs text-ink-muted">
-                        model yang disarankan
-                      </div>
-                      <div className="text-base font-black text-ink">
-                        {rec.product.name}
-                      </div>
-                      <div className="font-mono text-xs font-bold text-vermilion">
-                        {formatRupiah(rec.product.price)}
-                      </div>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <div className="inline-flex items-center gap-1.5 font-bold text-vermilion text-xs mb-1">
+                      <Sparkles className="h-3.5 w-3.5" />
+                      <span>Rekomendasi Hardware untuk Catatan Waktumu</span>
                     </div>
-
-                    <div className="flex flex-wrap items-center gap-2">
-                      <button
-                        onClick={claim}
-                        className="tactile-btn-dark inline-flex items-center gap-2 rounded-md px-4 py-2 text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
-                      >
-                        {copied ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Copy className="h-3.5 w-3.5" aria-hidden="true" />}
-                        <span>Klaim Voucher SUB10CUBER</span>
-                      </button>
-                    </div>
+                    <p className="text-ink font-medium">{rec.headline}</p>
+                    <p className="text-ink-secondary mt-1">
+                      Pilihan cocok: <strong className="text-ink">{rec.product.name}</strong> ({formatRupiah(rec.product.price)})
+                    </p>
                   </div>
+                  <button
+                    onClick={claim}
+                    className="btn-vermilion shrink-0 inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-xs font-bold whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
+                  >
+                    <span>Klaim Voucher Diskon</span>
+                  </button>
                 </div>
               </motion.div>
             )}

@@ -12,24 +12,19 @@ export function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 h-16 border-b border-border bg-canvas/95 backdrop-blur-md">
-      <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Wordmark */}
+    <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-4xl">
+      <div className="flex h-13 items-center justify-between rounded-full border border-border bg-canvas px-4 sm:px-5 shadow-lg">
+        {/* Minimal Wordmark */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="flex items-center gap-2.5 text-left whitespace-nowrap transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
-          aria-label="cuberlab id, kembali ke atas"
+          className="flex items-center gap-2 whitespace-nowrap transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion rounded-full"
+          aria-label="CuberLab ID, kembali ke bagian atas"
         >
-          <span className="flex h-8 w-8 items-center justify-center rounded-md bg-ink text-canvas shrink-0">
-            <Box className="h-4 w-4" aria-hidden="true" />
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-well text-ink shrink-0">
+            <Box className="h-3.5 w-3.5" aria-hidden="true" />
           </span>
-          <span className="leading-none whitespace-nowrap">
-            <span className="block text-[15px] font-extrabold tracking-tight text-ink whitespace-nowrap">
-              CuberLab ID
-            </span>
-            <span className="mt-0.5 block text-[10px] text-ink-muted whitespace-nowrap">
-              speedcube flagship store
-            </span>
+          <span className="text-sm font-bold tracking-tight text-ink whitespace-nowrap">
+            CuberLab<span className="text-vermilion">.</span>
           </span>
         </button>
 
@@ -39,29 +34,29 @@ export function Navbar() {
             <button
               key={link.id}
               onClick={() => go(link.id)}
-              className="rounded-md px-3.5 py-1.5 text-sm font-medium text-ink-secondary transition-colors hover:bg-well hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
+              className="rounded-full px-3 py-1.5 text-xs font-medium text-ink-secondary transition-colors hover:text-ink hover:bg-well focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion whitespace-nowrap"
             >
               {link.label}
             </button>
           ))}
         </nav>
 
-        {/* CTA & Mobile Menu Toggle */}
-        <div className="flex items-center gap-2.5">
+        {/* Primary Action Button & Mobile Toggle */}
+        <div className="flex items-center gap-2">
           <a
             href={WA_HERO}
             target="_blank"
             rel="noopener noreferrer"
-            className="tactile-btn-dark inline-flex items-center gap-2 rounded-md px-4 py-2 text-xs font-semibold sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
+            className="btn-primary inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion whitespace-nowrap"
           >
-            <MessageCircle className="h-4 w-4 text-canvas" aria-hidden="true" />
-            <span>Pesan via WhatsApp</span>
+            <MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>Pesan WA</span>
           </a>
 
           <button
             onClick={() => setOpen((prev) => !prev)}
-            className="flex h-9 w-9 items-center justify-center rounded-md border border-border bg-surface text-ink transition-colors hover:bg-well focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion md:hidden"
-            aria-label="Toggle navigation menu"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-well text-ink transition-colors hover:bg-well-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion md:hidden"
+            aria-label="Toggle navigasi"
             aria-expanded={open}
           >
             {open ? <X className="h-4 w-4" aria-hidden="true" /> : <Menu className="h-4 w-4" aria-hidden="true" />}
@@ -69,22 +64,22 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Menu Dropdown */}
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.18, ease: "easeInOut" }}
-            className="overflow-hidden border-b border-border bg-surface px-4 py-3 md:hidden"
+            initial={{ opacity: 0, y: -8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.98 }}
+            transition={{ duration: 0.15 }}
+            className="mt-2 overflow-hidden rounded-2xl border border-border bg-surface p-3 md:hidden"
           >
-            <div className="grid gap-1">
+            <div className="flex flex-col gap-1">
               {NAV_LINKS.map((link) => (
                 <button
                   key={link.id}
                   onClick={() => go(link.id)}
-                  className="rounded-md px-3 py-2 text-left text-sm font-medium text-ink-secondary transition-colors hover:bg-well hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
+                  className="rounded-xl px-4 py-2.5 text-left text-xs font-medium text-ink-secondary transition-colors hover:bg-well hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion whitespace-nowrap"
                 >
                   {link.label}
                 </button>

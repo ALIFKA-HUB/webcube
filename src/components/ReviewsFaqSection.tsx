@@ -8,103 +8,109 @@ export function ReviewsFaqSection() {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
 
   return (
-    <section id="testimoni" className="relative scroll-mt-20 px-4 py-16 sm:px-6 lg:px-8">
+    <section id="testimoni" className="relative scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <SectionHeader
-          index="04 // ulasan dan faq"
-          title="Dipercaya Speedcuber Kompetitif Indonesia"
-          subtitle="Dari pemula yang mengejar sub-20 hingga pemegang rekor kompetisi nasional, cuber di seluruh Indonesia mempercayakan setup dan tuning rubiknya pada CuberLab ID."
+          badge="Ulasan & FAQ"
+          title="Dipercaya Komunitas Speedcube"
+          subtitle="Dari pemula yang mengejar sub-20 hingga pemegang rekor kompetisi nasional di seluruh Indonesia."
+          align="center"
         />
 
-        {/* 12-column asymmetric layout: Left 5 cols (Testimonials), Right 7 cols (FAQ) */}
-        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-10">
-          {/* Left Column (5 cols): 3 Verified Editorial Testimonials */}
-          <div className="flex flex-col gap-4 lg:col-span-5">
-            {TESTIMONIALS.map((t) => (
-              <div
-                key={t.name}
-                className="tactile-card flex flex-col justify-between rounded-xl p-5 sm:p-6"
-              >
-                <div>
-                  {/* Star Rating & Badge */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1">
-                      {[...Array(t.rating)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-vermilion text-vermilion" aria-hidden="true" />
-                      ))}
-                    </div>
-                    <span className="rounded-md border border-border bg-well px-2 py-0.5 font-mono text-xs text-ink-secondary">
-                      {t.badge}
-                    </span>
+        {/* 3-Column Clean Testimonial Cards */}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {TESTIMONIALS.map((t) => (
+            <div
+              key={t.name}
+              className="flex flex-col justify-between rounded-3xl border border-border bg-surface p-6 sm:p-7 hover:border-border-strong transition-colors"
+            >
+              <div>
+                {/* Star Rating & Badge */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1">
+                    {[...Array(t.rating)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className="h-3.5 w-3.5 fill-vermilion text-vermilion"
+                        aria-hidden="true"
+                      />
+                    ))}
                   </div>
-
-                  {/* Quote (<= 3 lines) */}
-                  <p className="mt-3.5 text-xs font-medium leading-relaxed text-ink sm:text-sm line-clamp-3">
-                    "{t.quote}"
-                  </p>
-                </div>
-
-                {/* Attribution */}
-                <div className="mt-4 flex items-center justify-between border-t border-border pt-3 text-xs">
-                  <div>
-                    <div className="font-bold text-ink">{t.name}</div>
-                    <div className="text-xs text-ink-muted">{t.role}</div>
-                  </div>
-                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-green">
-                    <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
-                    <span>terverifikasi</span>
+                  <span className="rounded-full border border-border bg-well px-2.5 py-0.5 font-mono text-[11px] text-ink-muted">
+                    {t.badge}
                   </span>
                 </div>
+
+                {/* Quote */}
+                <p className="mt-4 text-sm leading-relaxed text-ink-secondary">
+                  "{t.quote}"
+                </p>
               </div>
-            ))}
+
+              {/* Attribution */}
+              <div className="mt-6 flex items-center justify-between border-t border-border pt-4 text-xs">
+                <div>
+                  <div className="font-bold text-ink">{t.name}</div>
+                  <div className="text-ink-muted">{t.role}</div>
+                </div>
+                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-green">
+                  <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
+                  <span>Terverifikasi</span>
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Minimalist FAQ Accordion (Clean Single-Line) */}
+        <div className="mx-auto mt-20 max-w-3xl">
+          <div className="mb-8 text-center">
+            <h3 className="text-2xl font-bold tracking-tight text-ink">
+              Pertanyaan yang Sering Diajukan
+            </h3>
+            <p className="mt-2 text-xs text-ink-secondary">
+              Seputar garansi, setting pelumas gratis, dan pengiriman aman.
+            </p>
           </div>
 
-          {/* Right Column (7 cols): Minimalist FAQ Accordion */}
-          <div className="tactile-card rounded-xl p-6 sm:p-8 lg:col-span-7">
-            <div className="mb-6 border-b border-border pb-4">
-              <span className="text-xs text-ink-muted">
-                tanya jawab resmi
-              </span>
-              <h3 className="mt-1 text-xl font-black tracking-tight text-ink">
-                FAQ Pengiriman & Garansi Setup
-              </h3>
-            </div>
-
-            <div className="divide-y divide-border">
-              {FAQS.map((faq, i) => {
-                const isOpen = openIdx === i;
-                return (
-                  <div key={faq.q} className="py-4 first:pt-0 last:pb-0">
-                    <button
-                      onClick={() => setOpenIdx(isOpen ? null : i)}
-                      aria-expanded={isOpen}
-                      className="flex w-full items-center justify-between gap-4 text-left text-sm font-bold text-ink transition-colors hover:text-vermilion focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion sm:text-base"
-                    >
-                      <span>{faq.q}</span>
-                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-border bg-well text-ink">
-                        {isOpen ? <Minus className="h-3.5 w-3.5" aria-hidden="true" /> : <Plus className="h-3.5 w-3.5" aria-hidden="true" />}
-                      </span>
-                    </button>
-
-                    <AnimatePresence initial={false}>
-                      {isOpen && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.18, ease: "easeInOut" }}
-                          className="overflow-hidden"
-                        >
-                          <p className="mt-2.5 text-xs leading-relaxed text-ink-secondary sm:text-sm">
-                            {faq.a}
-                          </p>
-                        </motion.div>
+          <div className="divide-y divide-border border-y border-border">
+            {FAQS.map((faq, i) => {
+              const isOpen = openIdx === i;
+              return (
+                <div key={faq.q} className="py-5">
+                  <button
+                    onClick={() => setOpenIdx(isOpen ? null : i)}
+                    aria-expanded={isOpen}
+                    className="flex w-full items-center justify-between text-left text-sm font-semibold text-ink transition-colors hover:text-ink-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
+                  >
+                    <span>{faq.q}</span>
+                    <span className="ml-4 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border bg-well text-ink-secondary">
+                      {isOpen ? (
+                        <Minus className="h-3 w-3" aria-hidden="true" />
+                      ) : (
+                        <Plus className="h-3 w-3" aria-hidden="true" />
                       )}
-                    </AnimatePresence>
-                  </div>
-                );
-              })}
-            </div>
+                    </span>
+                  </button>
+
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.18 }}
+                        className="overflow-hidden"
+                      >
+                        <p className="pt-3 text-xs sm:text-sm leading-relaxed text-ink-secondary">
+                          {faq.a}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

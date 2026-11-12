@@ -1,6 +1,6 @@
-/* Hallmark · theme: werkstatt · posture: full-palette · hero: stage · nav: edge-aligned · footer: mast · material: speedcube hardware bench */
-/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V4 · weakest: V, elevated architectural contrast with dark tactile bench against warm stone */
-/* Hallmark · answered F4 · .tactile-btn-vermilion is the sole accent primary, .tactile-btn-dark is secondary equipment console chrome */
+/* Hallmark · theme: tech-minimal · posture: dark-clean · hero: stage · nav: floating-island · footer: minimal-strip · material: sleek obsidian */
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5 · strongest: V, calm high-end minimalism inspired by Jiro.build and 21st.dev */
+/* Hallmark · answered F4 · .btn-primary is the primary CTA with .btn-ghost and .btn-vermilion for contextual actions */
 /* Hallmark · dismissed 49 · button children are explicitly styled with inline flex and fixed layout without wrapping */
 
 @import "tailwindcss";
@@ -9,63 +9,50 @@
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --color-canvas: #f7f6f3;
-  --color-canvas-subtle: #efece6;
-  --color-surface: #ffffff;
-  --color-surface-raised: #fcfbfa;
-  --color-well: #eae7df;
-  --color-well-subtle: #f2efe9;
-  --color-stage: #141416;
-  --color-stage-surface: #1e1e22;
-  --color-stage-border: #2c2c32;
+  --color-canvas: #09090b;
+  --color-canvas-subtle: #0d0d11;
+  --color-surface: #121216;
+  --color-surface-hover: #18181f;
+  --color-well: #18181e;
+  --color-well-subtle: #202028;
 
-  --color-border: #dcd9d2;
-  --color-border-subtle: #e6e3dc;
-  --color-border-strong: #c8c4bc;
+  --color-border: #27272a;
+  --color-border-subtle: #1c1c20;
+  --color-border-strong: #3f3f46;
 
-  --color-ink: #111111;
-  --color-ink-secondary: #575653;
-  --color-ink-muted: #8a8884;
-  --color-ink-inverse: #f7f6f3;
+  --color-ink: #fafafa;
+  --color-ink-secondary: #a1a1aa;
+  --color-ink-muted: #71717a;
+  --color-ink-inverse: #09090b;
 
   --color-vermilion: #d9381e;
-  --color-vermilion-soft: #fdebec;
+  --color-vermilion-soft: #2d1517;
   --color-vermilion-deep: #b82d17;
 
-  --color-blue: #1f6c9f;
-  --color-blue-soft: #eaf3f9;
-  --color-green: #2a6b35;
-  --color-green-soft: #edf6ef;
-
-  --color-dark-canvas: #111113;
-  --color-dark-surface: #18181b;
-  --color-dark-border: #27272a;
+  --color-blue: #38bdf8;
+  --color-blue-soft: #0c2838;
+  --color-green: #22c55e;
+  --color-green-soft: #0e2e18;
 }
 
 :root {
-  --color-canvas: #f7f6f3;
-  --color-surface: #ffffff;
-  --color-well: #eae7df;
-  --color-border: #dcd9d2;
-  --color-border-strong: #c8c4bc;
-  --color-ink: #111111;
-  --color-ink-secondary: #575653;
-  --color-ink-muted: #8a8884;
+  --color-canvas: #09090b;
+  --color-surface: #121216;
+  --color-surface-hover: #18181f;
+  --color-well: #18181e;
+  --color-well-subtle: #202028;
+  --color-border: #27272a;
+  --color-border-strong: #3f3f46;
+  --color-ink: #fafafa;
+  --color-ink-secondary: #a1a1aa;
+  --color-ink-muted: #71717a;
   --color-vermilion: #d9381e;
   --color-vermilion-deep: #b82d17;
-  --color-dark-canvas: #111113;
-  --color-dark-surface: #161618;
-  --color-dark-border: #2a2a2e;
-  --color-stage-border: #3a3a42;
+  --color-white: #ffffff;
+  --color-black: #09090b;
 
-  --grid-line: rgba(17, 17, 17, 0.035);
-  --shadow-inset-light: rgba(255, 255, 255, 0.9);
-  --shadow-ambient: rgba(17, 17, 17, 0.03);
-  --shadow-elevated: rgba(17, 17, 17, 0.02);
-  --shadow-dark-inset: rgba(255, 255, 255, 0.05);
-  --shadow-dark-ambient: rgba(0, 0, 0, 0.35);
-  --shadow-well: rgba(17, 17, 17, 0.05);
-  --shadow-well-dark: rgba(0, 0, 0, 0.5);
+  --shadow-card: rgba(0, 0, 0, 0.4);
+  --spotlight-glow: rgba(255, 255, 255, 0.05);
 }
 
 html {
@@ -82,15 +69,11 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
-  background-image:
-    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-  background-size: 32px 32px;
 }
 
 ::selection {
   background-color: var(--color-ink);
-  color: var(--color-surface);
+  color: var(--color-canvas);
 }
 
 :focus-visible {
@@ -99,14 +82,14 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
   background: var(--color-canvas);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border-strong);
-  border-radius: 4px;
+  background: var(--color-border);
+  border-radius: 9999px;
 }
 
 button {
@@ -117,87 +100,64 @@ canvas {
   display: block;
 }
 
-/* Tactile hardware styling */
-.tactile-card {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  box-shadow: 0 1px 0 var(--shadow-inset-light) inset, 0 2px 4px var(--shadow-ambient), 0 8px 20px var(--shadow-elevated);
-}
-
-.tactile-card-dark {
-  background-color: var(--color-dark-surface);
-  border: 1px solid var(--color-dark-border);
-  box-shadow: 0 1px 0 var(--shadow-dark-inset) inset, 0 4px 16px var(--shadow-dark-ambient);
-  color: var(--color-canvas);
-}
-
-.tactile-btn-dark {
-  background-color: var(--color-ink);
-  color: var(--color-surface);
-  border: 1px solid var(--color-ink);
-  box-shadow: 0 2px 0 var(--color-dark-canvas);
-  white-space: nowrap;
-  transition: transform 80ms ease, box-shadow 80ms ease, background-color 120ms ease;
-}
-.tactile-btn-dark:hover {
-  background-color: var(--color-dark-surface);
-}
-.tactile-btn-dark:active {
-  transform: translateY(2px);
-  box-shadow: 0 0 0 transparent;
-}
-
-.tactile-btn-light {
+/* Minimalist tech-chic card styles */
+.sleek-card {
   background-color: var(--color-surface);
   color: var(--color-ink);
   border: 1px solid var(--color-border);
-  box-shadow: 0 2px 0 var(--color-border);
-  white-space: nowrap;
-  transition: transform 80ms ease, box-shadow 80ms ease, background-color 120ms ease;
+  box-shadow: 0 4px 20px var(--shadow-card);
 }
-.tactile-btn-light:hover {
-  background-color: var(--color-canvas-subtle);
-}
-.tactile-btn-light:active {
-  transform: translateY(2px);
-  box-shadow: 0 0 0 transparent;
+.sleek-card:hover {
+  border-color: var(--color-border-strong);
 }
 
-.tactile-btn-vermilion {
-  background-color: var(--color-vermilion);
-  color: var(--color-surface);
-  border: 1px solid var(--color-vermilion-deep);
-  box-shadow: 0 2px 0 var(--color-vermilion-deep);
-  white-space: nowrap;
-  transition: transform 80ms ease, box-shadow 80ms ease, filter 120ms ease;
-}
-.tactile-btn-vermilion:hover {
-  filter: brightness(1.05);
-}
-.tactile-btn-vermilion:active {
-  transform: translateY(2px);
-  box-shadow: 0 0 0 transparent;
-}
-
-.hardware-well {
-  background-color: var(--color-well);
-  border: 1px solid var(--color-border);
-  box-shadow: inset 0 1px 3px var(--shadow-well);
-}
-
-.hardware-well-dark {
-  background-color: var(--color-dark-canvas);
-  border: 1px solid var(--color-dark-border);
-  box-shadow: inset 0 2px 4px var(--shadow-well-dark);
+/* Button variants */
+.btn-primary {
+  background-color: var(--color-ink);
   color: var(--color-canvas);
+  border: 1px solid var(--color-ink);
+  white-space: nowrap;
+  transition: transform 120ms ease, background-color 150ms ease;
+}
+.btn-primary:hover {
+  background-color: var(--color-ink-secondary);
+}
+.btn-primary:active {
+  transform: scale(0.98);
 }
 
-.stage-grid-pattern {
-  background-image:
-    radial-gradient(var(--color-stage-border) 1px, transparent 1px),
-    radial-gradient(var(--color-stage-border) 1px, var(--color-dark-surface) 1px);
-  background-size: 24px 24px;
-  background-position: 0 0, 12px 12px;
+.btn-ghost {
+  background-color: var(--color-well);
+  color: var(--color-ink);
+  border: 1px solid var(--color-border);
+  white-space: nowrap;
+  transition: transform 120ms ease, background-color 150ms ease, border-color 150ms ease;
+}
+.btn-ghost:hover {
+  background-color: var(--color-well-subtle);
+  border-color: var(--color-border-strong);
+}
+.btn-ghost:active {
+  transform: scale(0.98);
+}
+
+.btn-vermilion {
+  background-color: var(--color-vermilion);
+  color: var(--color-white);
+  border: 1px solid var(--color-vermilion-deep);
+  white-space: nowrap;
+  transition: transform 120ms ease, background-color 150ms ease;
+}
+.btn-vermilion:hover {
+  background-color: var(--color-vermilion-deep);
+}
+.btn-vermilion:active {
+  transform: scale(0.98);
+}
+
+/* Ambient spotlight container */
+.spotlight-stage {
+  background-image: radial-gradient(circle at center, var(--spotlight-glow) 0%, transparent 70%);
 }
 
 /* Reduced motion preference fallback */
