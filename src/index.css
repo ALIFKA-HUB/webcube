@@ -1,80 +1,96 @@
-/* Hallmark · theme: tech-minimal · posture: dark-clean · hero: stage · nav: floating-island · footer: minimal-strip · material: sleek obsidian */
-/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5 · strongest: V, calm high-end minimalism inspired by Jiro.build and 21st.dev */
-/* Hallmark · answered F4 · .btn-primary is the primary CTA with .btn-ghost and .btn-vermilion for contextual actions */
-/* Hallmark · dismissed 49 · button children are explicitly styled with inline flex and fixed layout without wrapping */
-
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --color-canvas: #09090b;
-  --color-canvas-subtle: #0d0d11;
-  --color-surface: #121216;
-  --color-surface-hover: #18181f;
-  --color-well: #18181e;
-  --color-well-subtle: #202028;
+  --color-canvas: #07080A;
+  --color-band: #0C0E14;
+  --color-surface: #12151E;
+  --color-surface-hover: #171B26;
+  --color-well: #0E1118;
+  --color-well-subtle: #1A1F2B;
 
-  --color-border: #27272a;
-  --color-border-subtle: #1c1c20;
-  --color-border-strong: #3f3f46;
+  --color-border: #1E2330;
+  --color-border-subtle: #141721;
+  --color-border-strong: #30384D;
 
-  --color-ink: #fafafa;
-  --color-ink-secondary: #a1a1aa;
-  --color-ink-muted: #71717a;
-  --color-ink-inverse: #09090b;
+  --color-ink: #F4F6FA;
+  --color-ink-secondary: #94A3B8;
+  --color-ink-muted: #5E6A82;
+  --color-ink-inverse: #07080A;
 
-  --color-vermilion: #d9381e;
-  --color-vermilion-soft: #2d1517;
-  --color-vermilion-deep: #b82d17;
+  --color-accent: #C8FF2E;
+  --color-accent-ink: #07080A;
+  --color-accent-soft: rgba(200, 255, 46, 0.10);
 
-  --color-blue: #38bdf8;
-  --color-blue-soft: #0c2838;
-  --color-green: #22c55e;
-  --color-green-soft: #0e2e18;
+  --color-signal-red: #EF4444;
+  --color-signal-green: #22C55E;
+
+  --color-vermilion: #EF4444;
+  --color-vermilion-soft: #261215;
+  --color-vermilion-deep: #DC2626;
+
+  --color-blue: #38BDF8;
+  --color-blue-soft: #0C2333;
+  --color-green: #22C55E;
+  --color-green-soft: #0D2618;
 }
 
 :root {
-  --color-canvas: #09090b;
-  --color-surface: #121216;
-  --color-surface-hover: #18181f;
-  --color-well: #18181e;
-  --color-well-subtle: #202028;
-  --color-border: #27272a;
-  --color-border-strong: #3f3f46;
-  --color-ink: #fafafa;
-  --color-ink-secondary: #a1a1aa;
-  --color-ink-muted: #71717a;
-  --color-vermilion: #d9381e;
-  --color-vermilion-deep: #b82d17;
+  --color-canvas: #07080A;
+  --color-band: #0C0E14;
+  --color-surface: #12151E;
+  --color-surface-hover: #171B26;
+  --color-well: #0E1118;
+  --color-well-subtle: #1A1F2B;
+  --color-border: #1E2330;
+  --color-border-subtle: #141721;
+  --color-border-strong: #30384D;
+  --color-ink: #F4F6FA;
+  --color-ink-secondary: #94A3B8;
+  --color-ink-muted: #5E6A82;
+  --color-ink-inverse: #07080A;
+
+  --color-accent: #C8FF2E;
+  --color-accent-ink: #07080A;
+  --color-accent-soft: rgba(200, 255, 46, 0.10);
+
+  --color-signal-red: #EF4444;
+  --color-signal-green: #22C55E;
+
+  --color-vermilion: #EF4444;
+  --color-vermilion-soft: #261215;
+  --color-vermilion-deep: #DC2626;
+
+  --color-blue: #38BDF8;
+  --color-blue-soft: #0C2333;
+  --color-green: #22C55E;
+  --color-green-soft: #0D2618;
+
   --color-white: #ffffff;
-  --color-black: #09090b;
+  --color-black: #07080A;
 
-  --shadow-card: rgba(0, 0, 0, 0.4);
-  --spotlight-glow: rgba(255, 255, 255, 0.05);
-  --color-blue: #38bdf8;
-  --color-blue-soft: #0c2838;
-  --color-green: #22c55e;
-  --color-green-soft: #0e2e18;
+  --shadow-card: rgba(0, 0, 0, 0.5);
+  --spotlight-glow: rgba(200, 255, 46, 0.04);
 
-  /* Isometric Mechanical Anatomy tokens (wheresryan22/anatomy dark obsidian plate) */
-  --anatomy-card: #101014;
-  --anatomy-paper: #101014;
-  --anatomy-face: #18181f;
-  --anatomy-top: #20202a;
-  --anatomy-shade-0: #0c0c10;
-  --anatomy-shade-1: #111116;
-  --anatomy-shade-2: #16161d;
-  --anatomy-shade-3: #1b1b24;
-  --anatomy-lit-top: #2c2c38;
-  --anatomy-lit-shade: #22222c;
-  --anatomy-hi: #e4e4e7;
-  --anatomy-mid: #71717a;
-  --anatomy-lo: #3f3f46;
-  --anatomy-faint: #27272a;
-  --anatomy-lit: #fafafa;
-  --anatomy-halo: #050507;
+  /* Isometric Mechanical Anatomy tokens (Carbon Telemetry Slate) */
+  --anatomy-card: #0E1118;
+  --anatomy-paper: #0E1118;
+  --anatomy-face: #151923;
+  --anatomy-top: #1D2230;
+  --anatomy-shade-0: #090B10;
+  --anatomy-shade-1: #0E1118;
+  --anatomy-shade-2: #141822;
+  --anatomy-shade-3: #1A1F2C;
+  --anatomy-lit-top: #262E40;
+  --anatomy-lit-shade: #1F2636;
+  --anatomy-hi: #E2E8F0;
+  --anatomy-mid: #64748B;
+  --anatomy-lo: #334155;
+  --anatomy-faint: #1E293B;
+  --anatomy-lit: #F8FAFC;
+  --anatomy-halo: #050608;
 }
 
 html {
@@ -94,12 +110,12 @@ body {
 }
 
 ::selection {
-  background-color: var(--color-ink);
-  color: var(--color-canvas);
+  background-color: var(--color-accent);
+  color: var(--color-accent-ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-vermilion);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
@@ -134,6 +150,20 @@ canvas {
 }
 
 /* Button variants */
+.btn-accent {
+  background-color: var(--color-accent);
+  color: var(--color-accent-ink);
+  border: 1px solid var(--color-accent);
+  white-space: nowrap;
+  transition: transform 120ms ease, filter 150ms ease;
+}
+.btn-accent:hover {
+  filter: brightness(1.06);
+}
+.btn-accent:active {
+  transform: scale(0.98);
+}
+
 .btn-primary {
   background-color: var(--color-ink);
   color: var(--color-canvas);
@@ -180,6 +210,26 @@ canvas {
 /* Ambient spotlight container */
 .spotlight-stage {
   background-image: radial-gradient(circle at center, var(--spotlight-glow) 0%, transparent 70%);
+}
+
+/* Telemetry pattern */
+.telemetry-grid {
+  background-image: radial-gradient(rgba(148, 163, 184, 0.14) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Marquee ticker */
+@keyframes telemetry-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee {
+  animation: telemetry-marquee 32s linear infinite;
 }
 
 /* Isometric Mechanical Anatomy Plates */
