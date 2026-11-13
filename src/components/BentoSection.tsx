@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, animate, motion } from "framer-motion";
 import { Activity, CheckCircle2, Cpu, Gauge, Magnet, Sliders, Target, Zap } from "lucide-react";
 import { STYLE_PROFILES, TENSION_LEVELS, TRAVEL_LEVELS } from "../data/content";
+import { BallCoreAnatomy } from "./figures/BallCoreAnatomy";
+import { MagLevAnatomy } from "./figures/MagLevAnatomy";
 import { SectionHeader } from "./SectionHeader";
 
 function Meter({
@@ -42,12 +44,6 @@ function Meter({
 function MagLevCard() {
   const [mode, setMode] = useState<"spring" | "maglev">("maglev");
   const isMag = mode === "maglev";
-
-  const zig = useMemo(() => {
-    const pts: string[] = [];
-    for (let i = 0; i <= 8; i++) pts.push(`${i % 2 === 0 ? 76 : 124},${50 + i * 6.5}`);
-    return pts.join(" ");
-  }, []);
 
   return (
     <div className="flex h-full flex-col justify-between rounded-3xl border border-border bg-surface p-6 sm:p-8 hover:border-border-strong transition-colors md:col-span-7">
@@ -93,9 +89,9 @@ function MagLevCard() {
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 items-center gap-6 sm:grid-cols-2">
+      <div className="mt-6 grid grid-cols-1 items-center gap-6 lg:grid-cols-12">
         {/* Dynamic Meters */}
-        <div className="space-y-4">
+        <div className="space-y-4 lg:col-span-5">
           <Meter
             label="Gesekan Kinetik"
             value={isMag ? 32 : 100}
@@ -116,69 +112,9 @@ function MagLevCard() {
           />
         </div>
 
-        {/* Visual Schematic */}
-        <div className="relative flex h-48 items-center justify-center rounded-2xl border border-border bg-well p-4">
-          <AnimatePresence mode="wait">
-            {isMag ? (
-              <motion.div
-                key="maglev"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.2 }}
-                className="flex flex-col items-center justify-center"
-              >
-                <div className="h-3 w-24 rounded-full bg-border-strong" />
-                <motion.div
-                  className="mt-2.5 h-6 w-20 rounded-full border border-vermilion bg-vermilion-soft flex items-center justify-center font-mono text-[10px] font-bold text-vermilion"
-                  animate={{ y: [0, -3, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  N (POLE)
-                </motion.div>
-                <div className="my-2 flex flex-col items-center text-[10px] text-ink-muted">
-                  <span className="text-vermilion font-semibold">▲ MEDAN TOLAK ▼</span>
-                  <span>celah repulsi magnetik</span>
-                </div>
-                <motion.div
-                  className="mb-2.5 h-6 w-20 rounded-full border border-vermilion bg-vermilion-soft flex items-center justify-center font-mono text-[10px] font-bold text-vermilion"
-                  animate={{ y: [0, 3, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  N (POLE)
-                </motion.div>
-                <div className="h-3 w-24 rounded-full bg-border-strong" />
-                <span className="mt-2 text-[10px] text-ink-muted">
-                  n-n repulsion · 0% kontak logam
-                </span>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="spring"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.2 }}
-                className="flex flex-col items-center justify-center"
-              >
-                <div className="h-3 w-24 rounded-full bg-border-strong" />
-                <svg viewBox="0 0 200 120" className="my-1 h-20 w-24" aria-hidden="true">
-                  <polyline
-                    fill="none"
-                    stroke="#71717a"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    points={zig}
-                  />
-                </svg>
-                <div className="h-3 w-24 rounded-full bg-border-strong" />
-                <span className="mt-2 text-[10px] text-ink-muted">
-                  pegas aus seiring waktu · gesekan logam
-                </span>
-              </motion.div>
-            )}
-          </AnimatePresence>
+        {/* 2.5D Isometric Mechanical Anatomy Plate */}
+        <div className="lg:col-span-7">
+          <MagLevAnatomy mode={mode} />
         </div>
       </div>
     </div>
@@ -213,85 +149,7 @@ function BallCoreCard() {
       </div>
 
       <div className="mt-6">
-        <button
-          onClick={() => setLocked((l) => !l)}
-          className="relative flex w-full items-center justify-center rounded-2xl border border-border bg-well py-5 transition-colors hover:border-border-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion"
-          aria-label="Simulasi snap magnetik ball-core 45 derajat"
-        >
-          <svg viewBox="0 0 220 180" className="h-40 w-full max-w-[240px]" aria-hidden="true">
-            {[34, 52, 70].map((r, i) => (
-              <motion.circle
-                key={r}
-                cx="110"
-                cy="86"
-                r={r}
-                fill="none"
-                stroke="#38bdf8"
-                strokeWidth="1.2"
-                strokeDasharray="3 5"
-                animate={{ opacity: locked ? [0.2, 0.8, 0.3] : 0.15, scale: locked ? [1, 1.04, 1] : 1 }}
-                style={{ transformBox: "fill-box", transformOrigin: "center" }}
-                transition={{ duration: 0.9, delay: i * 0.08 }}
-              />
-            ))}
-            <motion.g
-              style={{ transformOrigin: "110px 86px" }}
-              animate={{ rotate: locked ? 0 : 45 }}
-              transition={{ type: "spring", stiffness: 190, damping: 11 }}
-            >
-              {[0, 90, 180, 270].map((a) => (
-                <g key={a} transform={`rotate(${a} 110 86)`}>
-                  <rect
-                    x="94"
-                    y="22"
-                    width="32"
-                    height="32"
-                    rx="6"
-                    fill="#18181b"
-                    stroke={locked ? "#22c55e" : "#d9381e"}
-                    strokeWidth="2"
-                  />
-                  <line
-                    x1="110"
-                    y1="56"
-                    x2="110"
-                    y2="70"
-                    stroke={locked ? "#22c55e" : "#d9381e"}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                  <circle cx="110" cy="38" r="4.5" fill={locked ? "#22c55e" : "#d9381e"} />
-                </g>
-              ))}
-            </motion.g>
-            <circle cx="110" cy="86" r="22" fill="#27272a" stroke="#3f3f46" strokeWidth="1.5" />
-            <text
-              x="110"
-              y="90"
-              textAnchor="middle"
-              fontSize="10"
-              fontWeight="800"
-              fill="#fafafa"
-              fontFamily="JetBrains Mono, monospace"
-            >
-              CORE
-            </text>
-            <text
-              x="110"
-              y="172"
-              textAnchor="middle"
-              fontSize="10"
-              fontWeight="800"
-              fill={locked ? "#22c55e" : "#d9381e"}
-              fontFamily="JetBrains Mono, monospace"
-            >
-              {locked ? "0° · LOCKED ✓" : "45° UNDER-TURN"}
-            </text>
-          </svg>
-        </button>
-        <p className="mt-2 text-center text-xs text-ink-muted">
-          Klik diagram untuk memicu simulasi snap sudut
-        </p>
+        <BallCoreAnatomy locked={locked} onToggleLock={() => setLocked((l) => !l)} />
       </div>
     </div>
   );

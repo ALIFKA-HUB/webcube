@@ -53,6 +53,28 @@
 
   --shadow-card: rgba(0, 0, 0, 0.4);
   --spotlight-glow: rgba(255, 255, 255, 0.05);
+  --color-blue: #38bdf8;
+  --color-blue-soft: #0c2838;
+  --color-green: #22c55e;
+  --color-green-soft: #0e2e18;
+
+  /* Isometric Mechanical Anatomy tokens (wheresryan22/anatomy dark obsidian plate) */
+  --anatomy-card: #101014;
+  --anatomy-paper: #101014;
+  --anatomy-face: #18181f;
+  --anatomy-top: #20202a;
+  --anatomy-shade-0: #0c0c10;
+  --anatomy-shade-1: #111116;
+  --anatomy-shade-2: #16161d;
+  --anatomy-shade-3: #1b1b24;
+  --anatomy-lit-top: #2c2c38;
+  --anatomy-lit-shade: #22222c;
+  --anatomy-hi: #e4e4e7;
+  --anatomy-mid: #71717a;
+  --anatomy-lo: #3f3f46;
+  --anatomy-faint: #27272a;
+  --anatomy-lit: #fafafa;
+  --anatomy-halo: #050507;
 }
 
 html {
@@ -158,6 +180,301 @@ canvas {
 /* Ambient spotlight container */
 .spotlight-stage {
   background-image: radial-gradient(circle at center, var(--spotlight-glow) 0%, transparent 70%);
+}
+
+/* Isometric Mechanical Anatomy Plates */
+.iso-plate {
+  position: relative;
+  background-color: var(--anatomy-card);
+  color: var(--color-ink);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.iso-plate-interactive {
+  cursor: pointer;
+  transition: border-color 150ms ease;
+}
+.iso-plate-interactive:hover {
+  border-color: var(--color-border-strong);
+}
+
+.iso-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.iso-plate-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+  padding: 12px 16px 0;
+  font-size: 12px;
+  line-height: 1.35;
+}
+.iso-plate-fig {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--anatomy-mid);
+}
+.iso-plate-title {
+  color: var(--anatomy-hi);
+  font-weight: 600;
+  text-align: right;
+  margin-left: auto;
+}
+.iso-plate-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+  padding: 0 16px 12px;
+  font-size: 11px;
+  line-height: 1.35;
+}
+.iso-plate-hint {
+  color: var(--anatomy-mid);
+}
+.iso-plate-readout {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--anatomy-hi);
+  text-align: right;
+  margin-left: auto;
+}
+
+.iso-fill {
+  fill: var(--anatomy-face);
+  transition: fill 180ms ease;
+}
+.iso-shade[data-shade="0"] {
+  fill: var(--anatomy-shade-0);
+  transition: fill 180ms ease;
+}
+.iso-shade[data-shade="1"] {
+  fill: var(--anatomy-shade-1);
+  transition: fill 180ms ease;
+}
+.iso-shade[data-shade="2"] {
+  fill: var(--anatomy-shade-2);
+  transition: fill 180ms ease;
+}
+.iso-shade[data-shade="3"] {
+  fill: var(--anatomy-shade-3);
+  transition: fill 180ms ease;
+}
+.iso-top {
+  fill: var(--anatomy-top);
+  transition: fill 180ms ease;
+}
+
+.iso-solid[data-lit="true"] .iso-top {
+  fill: var(--anatomy-lit-top);
+}
+.iso-solid[data-lit="true"] .iso-shade[data-shade="2"],
+.iso-solid[data-lit="true"] .iso-shade[data-shade="3"] {
+  fill: var(--anatomy-lit-shade);
+}
+.iso-solid[data-lit="true"] .iso-line[data-role="outline"] {
+  stroke: var(--anatomy-lit);
+}
+
+.iso-solid[data-accent="vermilion"] .iso-top {
+  fill: var(--color-vermilion-soft);
+}
+.iso-solid[data-accent="vermilion"] .iso-shade[data-shade="0"],
+.iso-solid[data-accent="vermilion"] .iso-shade[data-shade="1"] {
+  fill: var(--color-vermilion-soft);
+}
+.iso-solid[data-accent="vermilion"] .iso-line:not([data-tone="halo"]) {
+  stroke: var(--color-vermilion);
+}
+
+.iso-solid[data-accent="blue"] .iso-top {
+  fill: var(--color-blue-soft);
+}
+.iso-solid[data-accent="blue"] .iso-shade[data-shade="0"],
+.iso-solid[data-accent="blue"] .iso-shade[data-shade="1"] {
+  fill: var(--color-blue-soft);
+}
+.iso-solid[data-accent="blue"] .iso-line:not([data-tone="halo"]) {
+  stroke: var(--color-blue);
+}
+
+.iso-solid[data-accent="green"] .iso-top {
+  fill: var(--color-green-soft);
+}
+.iso-solid[data-accent="green"] .iso-shade[data-shade="0"],
+.iso-solid[data-accent="green"] .iso-shade[data-shade="1"] {
+  fill: var(--color-green-soft);
+}
+.iso-solid[data-accent="green"] .iso-line:not([data-tone="halo"]) {
+  stroke: var(--color-green);
+}
+
+.iso-line {
+  fill: none;
+  stroke: var(--anatomy-hi);
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 180ms ease;
+}
+.iso-line[data-tone="hi"] {
+  stroke: var(--anatomy-hi);
+}
+.iso-line[data-tone="mid"] {
+  stroke: var(--anatomy-mid);
+}
+.iso-line[data-tone="lo"] {
+  stroke: var(--anatomy-lo);
+}
+.iso-line[data-tone="faint"] {
+  stroke: var(--anatomy-faint);
+}
+.iso-line[data-tone="lit"] {
+  stroke: var(--anatomy-lit);
+}
+.iso-line[data-tone="halo"] {
+  stroke: var(--anatomy-halo);
+}
+.iso-line[data-tone="vermilion"] {
+  stroke: var(--color-vermilion);
+}
+.iso-line[data-tone="blue"] {
+  stroke: var(--color-blue);
+}
+.iso-line[data-tone="green"] {
+  stroke: var(--color-green);
+}
+
+.iso-line[data-w="thick"] {
+  stroke-width: 2;
+}
+.iso-line[data-w="mid"] {
+  stroke-width: 1.4;
+}
+.iso-line[data-w="thin"] {
+  stroke-width: 1;
+}
+.iso-line[data-w="hair"] {
+  stroke-width: 0.65;
+}
+.iso-line[data-w="halo"] {
+  stroke-width: 4.5;
+}
+
+.iso-line[data-dash="true"] {
+  stroke-dasharray: 4 3;
+}
+
+.iso-line[data-flow="true"] {
+  stroke-dasharray: 5 4;
+  animation: iso-flow 1.4s linear infinite;
+}
+
+@keyframes iso-flow {
+  from {
+    stroke-dashoffset: 18;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.iso-wire-end {
+  fill: var(--anatomy-card);
+  stroke: var(--anatomy-hi);
+  stroke-width: 1.25;
+}
+.iso-wire-end[data-tone="vermilion"] {
+  stroke: var(--color-vermilion);
+}
+.iso-wire-end[data-tone="blue"] {
+  stroke: var(--color-blue);
+}
+.iso-wire-end[data-tone="green"] {
+  stroke: var(--color-green);
+}
+.iso-wire-end[data-tone="lit"] {
+  fill: var(--anatomy-lit);
+  stroke: var(--anatomy-lit);
+}
+
+.iso-dots {
+  fill: var(--anatomy-lo);
+}
+.iso-dots[data-tone="mid"] {
+  fill: var(--anatomy-mid);
+}
+.iso-dots[data-tone="hi"] {
+  fill: var(--anatomy-hi);
+}
+.iso-dots[data-tone="vermilion"] {
+  fill: var(--color-vermilion);
+}
+.iso-dots[data-tone="blue"] {
+  fill: var(--color-blue);
+}
+.iso-dots[data-tone="green"] {
+  fill: var(--color-green);
+}
+
+.iso-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--color-border);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--color-ink-secondary);
+}
+
+.iso-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.iso-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border: 1px solid var(--color-border-strong);
+  background-color: var(--anatomy-face);
+  flex-shrink: 0;
+}
+.iso-swatch[data-tone="hi"] {
+  background-color: var(--anatomy-hi);
+}
+.iso-swatch[data-tone="mid"] {
+  background-color: var(--anatomy-mid);
+}
+.iso-swatch[data-tone="lo"] {
+  background-color: var(--anatomy-lo);
+}
+.iso-swatch[data-tone="lit"] {
+  background-color: var(--anatomy-lit);
+}
+.iso-swatch[data-tone="vermilion"] {
+  background-color: var(--color-vermilion);
+  border-color: var(--color-vermilion-deep);
+}
+.iso-swatch[data-tone="blue"] {
+  background-color: var(--color-blue);
+  border-color: var(--color-blue-soft);
+}
+.iso-swatch[data-tone="green"] {
+  background-color: var(--color-green);
+  border-color: var(--color-green-soft);
 }
 
 /* Reduced motion preference fallback */
