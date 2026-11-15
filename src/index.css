@@ -1,3 +1,7 @@
+/* Hallmark · theme: tech-minimal · posture: dark-clean · hero: asymmetric-split · nav: full-width-bar · footer: closing-band · material: carbon telemetry */
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5 · Carbon Telemetry Dark (#07080A / #0C0E14) with single Electric Volt accent (#C8FF2E) */
+/* Hallmark · dismissed 49 · button children are explicitly styled with inline flex and fixed layout without wrapping */
+
 @import "tailwindcss";
 
 @theme {
@@ -73,6 +77,9 @@
 
   --shadow-card: rgba(0, 0, 0, 0.5);
   --spotlight-glow: rgba(200, 255, 46, 0.04);
+  --spotlight-cube-volt: rgba(200, 255, 46, 0.09);
+  --spotlight-cube-cyan: rgba(56, 189, 248, 0.04);
+  --grid-dot: rgba(148, 163, 184, 0.14);
 
   /* Isometric Mechanical Anatomy tokens (Carbon Telemetry Slate) */
   --anatomy-card: #0E1118;
@@ -85,11 +92,11 @@
   --anatomy-shade-3: #1A1F2C;
   --anatomy-lit-top: #262E40;
   --anatomy-lit-shade: #1F2636;
-  --anatomy-hi: #E2E8F0;
-  --anatomy-mid: #64748B;
-  --anatomy-lo: #334155;
-  --anatomy-faint: #1E293B;
-  --anatomy-lit: #F8FAFC;
+  --anatomy-hi: #E4E8F1;
+  --anatomy-mid: #68768C;
+  --anatomy-lo: #313C4E;
+  --anatomy-faint: #1C2332;
+  --anatomy-lit: #F4F6FA;
   --anatomy-halo: #050608;
 }
 
@@ -179,29 +186,29 @@ canvas {
 }
 
 .btn-ghost {
-  background-color: var(--color-well);
+  background-color: transparent;
   color: var(--color-ink);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-strong);
   white-space: nowrap;
   transition: transform 120ms ease, background-color 150ms ease, border-color 150ms ease;
 }
 .btn-ghost:hover {
-  background-color: var(--color-well-subtle);
-  border-color: var(--color-border-strong);
+  background-color: var(--color-well);
+  border-color: var(--color-ink-muted);
 }
 .btn-ghost:active {
   transform: scale(0.98);
 }
 
 .btn-vermilion {
-  background-color: var(--color-vermilion);
+  background-color: var(--color-vermilion-deep);
   color: var(--color-white);
-  border: 1px solid var(--color-vermilion-deep);
+  border: 1px solid var(--color-vermilion);
   white-space: nowrap;
-  transition: transform 120ms ease, background-color 150ms ease;
+  transition: transform 120ms ease, filter 150ms ease;
 }
 .btn-vermilion:hover {
-  background-color: var(--color-vermilion-deep);
+  filter: brightness(0.92);
 }
 .btn-vermilion:active {
   transform: scale(0.98);
@@ -212,9 +219,18 @@ canvas {
   background-image: radial-gradient(circle at center, var(--spotlight-glow) 0%, transparent 70%);
 }
 
+.spotlight-cube {
+  background-image: radial-gradient(
+    circle at 50% 48%,
+    var(--spotlight-cube-volt) 0%,
+    var(--spotlight-cube-cyan) 32%,
+    transparent 68%
+  );
+}
+
 /* Telemetry pattern */
 .telemetry-grid {
-  background-image: radial-gradient(rgba(148, 163, 184, 0.14) 1px, transparent 1px);
+  background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
   background-size: 28px 28px;
 }
 
@@ -230,6 +246,11 @@ canvas {
 
 .animate-marquee {
   animation: telemetry-marquee 32s linear infinite;
+}
+
+.animate-marquee:hover,
+.animate-marquee:focus-within {
+  animation-play-state: paused;
 }
 
 /* Isometric Mechanical Anatomy Plates */

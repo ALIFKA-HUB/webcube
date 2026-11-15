@@ -1,6 +1,7 @@
 export * from "./Navbar";
 export * from "./CubeStage";
 export * from "./Hero";
+export * from "./TelemetryMarquee";
 export * from "./BentoSection";
 export * from "./CatalogSection";
 export * from "./TimerSection";
