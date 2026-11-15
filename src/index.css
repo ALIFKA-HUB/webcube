@@ -171,20 +171,6 @@ canvas {
   transform: scale(0.98);
 }
 
-.btn-primary {
-  background-color: var(--color-ink);
-  color: var(--color-canvas);
-  border: 1px solid var(--color-ink);
-  white-space: nowrap;
-  transition: transform 120ms ease, background-color 150ms ease;
-}
-.btn-primary:hover {
-  background-color: var(--color-ink-secondary);
-}
-.btn-primary:active {
-  transform: scale(0.98);
-}
-
 .btn-ghost {
   background-color: transparent;
   color: var(--color-ink);
@@ -197,20 +183,6 @@ canvas {
   border-color: var(--color-ink-muted);
 }
 .btn-ghost:active {
-  transform: scale(0.98);
-}
-
-.btn-vermilion {
-  background-color: var(--color-vermilion-deep);
-  color: var(--color-white);
-  border: 1px solid var(--color-vermilion);
-  white-space: nowrap;
-  transition: transform 120ms ease, filter 150ms ease;
-}
-.btn-vermilion:hover {
-  filter: brightness(0.92);
-}
-.btn-vermilion:active {
   transform: scale(0.98);
 }
 
