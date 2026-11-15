@@ -83,110 +83,141 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
   )}`;
 
   return (
-    <article className="flex h-full flex-col justify-between rounded-3xl border border-border bg-surface p-6 sm:p-7 hover:border-border-strong transition-colors">
-      <div>
-        {/* Top Badges */}
-        <div className="flex items-center justify-between">
-          <span className="rounded-full border border-vermilion/30 bg-vermilion-soft px-2.5 py-0.5 text-[11px] font-semibold text-vermilion">
-            {product.badge}
-          </span>
-          <span className="rounded-full border border-border bg-well px-2.5 py-0.5 text-[11px] font-medium text-ink-secondary capitalize">
-            {product.category}
-          </span>
-        </div>
-
-        {/* Isometric Cube Visual Pad */}
-        <div className="spotlight-stage relative my-6 flex h-40 w-full items-center justify-center rounded-2xl border border-border bg-well p-4 overflow-hidden">
-          <div className="h-28 w-28 shrink-0 relative z-10 transition-transform duration-300 hover:scale-105">
-            <IsoCube palette={product.palette} seed={index} />
-          </div>
-        </div>
-
-        {/* Product Title & Tagline */}
-        <h3 className="text-lg font-bold text-ink tracking-tight leading-snug">
-          {product.name}
-        </h3>
-        <p className="mt-1.5 text-xs text-ink-secondary leading-relaxed">
-          {product.tagline}
-        </p>
-
-        {/* Key Hardware Specs */}
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          <span className="rounded-full border border-border bg-well px-2.5 py-1 text-[11px] text-ink-secondary">
-            {product.core}
-          </span>
-          <span className="rounded-full border border-border bg-well px-2.5 py-1 text-[11px] text-ink-secondary">
-            {product.weight}
-          </span>
-          <span className="rounded-full border border-border bg-well px-2.5 py-1 text-[11px] text-ink-secondary">
-            {product.finish}
-          </span>
-        </div>
-      </div>
-
-      <div className="mt-6 border-t border-border pt-5">
-        {/* Price & Discount */}
-        <div className="flex items-baseline justify-between mb-4">
-          <div>
-            <div className="font-mono text-xl font-extrabold text-ink">
-              {formatRupiah(product.price)}
-            </div>
-            <div className="font-mono text-xs text-ink-muted line-through">
-              {formatRupiah(product.strike)}
-            </div>
-          </div>
-          <span className="rounded-full bg-green-soft border border-green/30 px-2 py-0.5 text-[11px] font-semibold text-green">
-            Hemat {discount}%
-          </span>
-        </div>
-
-        {/* Action Button */}
-        <a
-          href={waHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-primary flex w-full items-center justify-center gap-2 rounded-full py-2.5 text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion whitespace-nowrap"
-        >
-          <MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />
-          <span>Pesan via WhatsApp</span>
-        </a>
-
-        {/* Expandable Technical Specs Drawer */}
-        <button
-          onClick={() => setOpen((prev) => !prev)}
-          className="mt-3 flex w-full items-center justify-center gap-1.5 text-xs text-ink-secondary hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion whitespace-nowrap"
-        >
-          <span>{open ? "Tutup Spesifikasi" : "Lihat Spesifikasi Lengkap"}</span>
-          <ChevronDown
-            className={`h-3.5 w-3.5 transition-transform duration-200 ${
-              open ? "rotate-180" : ""
-            }`}
+    <motion.article
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.4, delay: index * 0.06, ease: "easeOut" }}
+      className="group rounded-2xl border border-border bg-surface overflow-hidden hover:border-border-strong transition-colors"
+    >
+      <div className="grid h-full grid-cols-1 sm:grid-cols-12">
+        {/* Left Studio Chamber */}
+        <div className="sm:col-span-5 bg-well p-6 flex flex-col justify-between relative overflow-hidden border-b border-border sm:border-b-0 sm:border-r">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-45"
+            style={{
+              background: `radial-gradient(circle at 50% 54%, ${product.aura} 0%, transparent 68%)`,
+            }}
             aria-hidden="true"
           />
-        </button>
 
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="mt-3 overflow-hidden rounded-2xl border border-border bg-well p-3.5 text-xs"
-            >
-              <div className="space-y-2">
-                {product.details.map(([key, val]) => (
-                  <div key={key} className="flex items-center justify-between border-b border-border pb-1.5 last:border-b-0 last:pb-0">
-                    <span className="text-ink-secondary">{key}</span>
-                    <span className="font-medium text-ink text-right">{val}</span>
-                  </div>
-                ))}
+          {/* Top Badges */}
+          <div className="relative z-10 flex flex-wrap items-center justify-between gap-2">
+            <span className="inline-flex items-center rounded-full border border-accent/30 bg-accent-soft px-2.5 py-0.5 text-[11px] font-semibold text-accent">
+              {product.badge}
+            </span>
+            <span className="inline-flex items-center rounded-full border border-border bg-surface px-2.5 py-0.5 text-[11px] font-medium text-ink-secondary capitalize">
+              {product.category}
+            </span>
+          </div>
+
+          {/* Centered Isometric Cube */}
+          <div className="relative z-10 flex flex-1 items-center justify-center py-8 sm:py-6">
+            <div className="h-36 w-36 sm:h-40 sm:w-40 shrink-0 motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:scale-105 motion-reduce:transition-none">
+              <IsoCube palette={product.palette} seed={index} />
+            </div>
+          </div>
+        </div>
+
+        {/* Right Spec & Action Panel */}
+        <div className="sm:col-span-7 p-6 sm:p-7 flex flex-col justify-between">
+          <div>
+            <h3 className="text-xl font-bold tracking-tight text-ink leading-snug">
+              {product.name}
+            </h3>
+            <p className="mt-1.5 text-sm text-ink-secondary leading-relaxed">
+              {product.tagline}
+            </p>
+
+            {/* 3 Crisp Hairline Spec Rows */}
+            <dl className="mt-5 border-t border-b border-border divide-y divide-border">
+              <div className="flex items-center justify-between gap-4 py-2.5">
+                <dt className="text-xs text-ink-muted">Core</dt>
+                <dd className="font-mono text-xs text-ink text-right">{product.core}</dd>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <div className="flex items-center justify-between gap-4 py-2.5">
+                <dt className="text-xs text-ink-muted">Bobot</dt>
+                <dd className="font-mono text-xs text-ink text-right">{product.weight}</dd>
+              </div>
+              <div className="flex items-center justify-between gap-4 py-2.5">
+                <dt className="text-xs text-ink-muted">Finishing</dt>
+                <dd className="font-mono text-xs text-ink text-right">{product.finish}</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div className="mt-6">
+            {/* Price & Discount */}
+            <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <div className="font-mono text-2xl font-extrabold text-ink">
+                  {formatRupiah(product.price)}
+                </div>
+                <div className="font-mono text-xs line-through text-ink-muted">
+                  {formatRupiah(product.strike)}
+                </div>
+              </div>
+              <span className="rounded-full border border-accent/30 bg-accent-soft px-2.5 py-0.5 text-xs font-semibold text-accent">
+                Hemat <span className="font-mono">{discount}%</span>
+              </span>
+            </div>
+
+            {/* Primary WhatsApp CTA */}
+            <a
+              href={waHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-accent flex w-full items-center justify-center gap-2 rounded-full px-5 py-2.5 text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent whitespace-nowrap"
+            >
+              <MessageCircle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+              <span>Pesan via WhatsApp</span>
+            </a>
+
+            {/* Expandable Technical Specs Drawer */}
+            <div className="mt-4 border-t border-border pt-3">
+              <button
+                type="button"
+                onClick={() => setOpen((prev) => !prev)}
+                aria-expanded={open}
+                className="flex w-full items-center justify-between text-xs font-medium text-ink-secondary hover:text-ink active:scale-[0.99] disabled:opacity-50 disabled:pointer-events-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent whitespace-nowrap cursor-pointer"
+              >
+                <span>{open ? "Tutup Spesifikasi" : "Lihat Spesifikasi Lengkap"}</span>
+                <ChevronDown
+                  className={`h-3.5 w-3.5 shrink-0 motion-safe:transition-transform motion-safe:duration-200 motion-reduce:transition-none ${
+                    open ? "rotate-180" : ""
+                  }`}
+                  aria-hidden="true"
+                />
+              </button>
+
+              <AnimatePresence initial={false}>
+                {open && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="mt-3 rounded-xl border border-border bg-well p-3.5 text-xs divide-y divide-border">
+                      {product.details.map(([key, val]) => (
+                        <div
+                          key={key}
+                          className="flex items-center justify-between gap-4 py-1.5 first:pt-0 last:pb-0"
+                        >
+                          <span className="text-ink-muted shrink-0">{key}</span>
+                          <span className="font-medium text-ink text-right">{val}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
       </div>
-    </article>
+    </motion.article>
   );
 }
 
@@ -199,36 +230,57 @@ export function CatalogSection() {
       : PRODUCTS.filter((p) => p.category === selectedCategory);
 
   return (
-    <section id="katalog" className="relative scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        <SectionHeader
-          badge="Katalog Flagship"
-          title="Rubik Pilihan Juara"
-          subtitle="Setiap unit disetel presisi, dilumasi dengan pelumas silikon performa tinggi, dan siap digunakan kompetisi langsung dari kotak."
-          align="center"
-        />
+    <section
+      id="katalog"
+      className="scroll-mt-24 border-t border-border px-4 py-24 sm:px-8 lg:px-10 lg:py-32"
+    >
+      <div className="mx-auto max-w-[1400px]">
+        {/* Top Asymmetric Header */}
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <SectionHeader
+            badge="02 // Katalog Flagship"
+            title="Rubik Pilihan Juara"
+            subtitle="Pilihan terbaik seri GAN dan MoYu terbaru. Setiap unit melalui pengecekan magnet dan setup pelumasan sebelum dikirim."
+            align="left"
+            className="mb-0 sm:mb-0"
+          />
 
-        {/* Filter Category Tabs */}
-        <div className="mb-12 flex justify-center">
-          <div className="inline-flex rounded-full border border-border bg-surface p-1.5">
-            {CATEGORY_TABS.map((tab) => (
-              <button
-                key={tab.key}
-                onClick={() => setSelectedCategory(tab.key)}
-                className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vermilion whitespace-nowrap ${
-                  selectedCategory === tab.key
-                    ? "bg-ink text-canvas shadow-xs"
-                    : "text-ink-secondary hover:text-ink"
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+          {/* Filter Category Tabs */}
+          <div
+            className="inline-flex flex-wrap items-center gap-1 self-start rounded-full border border-border bg-surface p-1.5 lg:self-end shrink-0"
+            role="tablist"
+            aria-label="Filter kategori rubik"
+          >
+            {CATEGORY_TABS.map((tab) => {
+              const active = selectedCategory === tab.key;
+              return (
+                <button
+                  key={tab.key}
+                  type="button"
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => setSelectedCategory(tab.key)}
+                  className={`relative rounded-full px-4 py-2 text-xs font-semibold transition-colors active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent whitespace-nowrap cursor-pointer ${
+                    active ? "text-accent-ink" : "text-ink-secondary hover:text-ink"
+                  }`}
+                >
+                  {active && (
+                    <motion.span
+                      layoutId="catalog-tab"
+                      transition={{ type: "spring", stiffness: 360, damping: 30 }}
+                      className="absolute inset-0 rounded-full bg-accent"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <span className="relative z-10">{tab.label}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Responsive Grid */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Wide 2-Column Product Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12">
           {filtered.map((product, index) => (
             <ProductCard key={product.id} product={product} index={index} />
           ))}
