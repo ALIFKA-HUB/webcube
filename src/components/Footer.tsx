@@ -20,14 +20,6 @@ export function Footer() {
             <p className="mt-4 max-w-sm text-xs leading-relaxed text-ink-secondary">
               Flagship store speedcube dan magnetic puzzle resmi Indonesia. Kami menyediakan unit resmi GAN dan MoYu dengan layanan free setup lube profesional.
             </p>
-
-            <div className="mt-5 flex items-center gap-2.5 text-xs text-ink-secondary">
-              <span className="relative flex h-2 w-2 shrink-0" aria-hidden="true">
-                <span className="absolute inline-flex h-full w-full motion-safe:animate-ping rounded-full bg-green opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-green" />
-              </span>
-              <span>Admin Online: Senin - Sabtu, 09.00 - 21.00 WIB</span>
-            </div>
           </div>
 
           {/* Navigation Links */}
@@ -50,14 +42,14 @@ export function Footer() {
           {/* Official Channels */}
           <div className="md:col-span-4">
             <h4 className="text-xs font-semibold text-ink">Kanal Resmi</h4>
-            <div className="mt-4 grid grid-cols-2 gap-2.5 text-xs">
+            <div className="mt-4 flex flex-col gap-2.5 text-xs">
               {STORE_CHANNELS.map((ch) => (
                 <a
                   key={ch.label}
                   href={ch.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-between rounded-xl border border-border bg-well px-3.5 py-2.5 text-ink-secondary transition-colors hover:border-border-strong hover:bg-surface hover:text-ink active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent whitespace-nowrap"
+                  className="inline-flex w-full max-w-xs items-center justify-between rounded-xl border border-border bg-well px-3.5 py-2.5 text-ink-secondary transition-colors hover:border-border-strong hover:bg-surface hover:text-ink active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent whitespace-nowrap"
                 >
                   <span>{ch.label}</span>
                   <ExternalLink className="h-3 w-3 text-ink-muted" aria-hidden="true" />

@@ -17,11 +17,6 @@ export const IG_URL = "https://instagram.com/cuberlab.id";
 
 export const STORE_CHANNELS: StoreChannel[] = [
   { label: "WhatsApp", href: WA_GENERAL },
-  { label: "Instagram", href: IG_URL },
-  { label: "TikTok", href: "https://www.tiktok.com/@cuberlab.id" },
-  { label: "Tokopedia", href: "https://www.tokopedia.com/cuberlab-id" },
-  { label: "Shopee", href: "https://shopee.co.id/cuberlab.id" },
-  { label: "YouTube", href: "https://www.youtube.com/@cuberlab.id" },
 ];
 
 export const NAV_LINKS: NavLink[] = [
