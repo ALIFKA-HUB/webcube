@@ -1,4 +1,4 @@
-import { ArrowRight, ChevronDown, MessageCircle, ShieldCheck, ShoppingBag, Sparkles, Truck } from "lucide-react";
+import { ArrowRight, ChevronDown, MessageCircle, ShoppingBag } from "lucide-react";
 import { motion } from "framer-motion";
 import { WA_HERO, scrollToId } from "../data/content";
 import { CubeStage } from "./CubeStage";
@@ -82,22 +82,11 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Bottom trust bar */}
+        {/* Bottom minimal editorial cue */}
         <div className="mt-8 pt-6 border-t border-border/70 flex flex-wrap items-center justify-between gap-4 text-xs text-ink-secondary">
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-            <span className="inline-flex items-center gap-2">
-              <ShieldCheck className="h-4 w-4 text-accent" aria-hidden="true" />
-              <span className="text-ink">100% Original GAN &amp; MoYu</span>
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-accent" aria-hidden="true" />
-              <span className="text-ink">Free Setup Lube Kompetisi</span>
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <Truck className="h-4 w-4 text-accent" aria-hidden="true" />
-              <span className="text-ink">Pengiriman Cepat Seluruh Indonesia</span>
-            </span>
-          </div>
+          <span className="text-ink-muted">
+            Distributor Resmi GAN &amp; MoYu · Indonesia
+          </span>
 
           <button
             onClick={() => scrollToId("fitur")}
